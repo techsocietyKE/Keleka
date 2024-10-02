@@ -4,17 +4,14 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-// Utility function to truncate description
-const truncateDescription = (description, wordLimit) => {
-  return description.split(" ").slice(0, wordLimit).join(" ") + (description.split(" ").length > wordLimit ? "..." : "");
-};
-const Books =()=> {
-  const [books, setBooks] = useState([]);
+
+const Users = () => {
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/books').then((response) => {
+    axios.get('/api/users').then((response) => {
       console.log(response.data);
-      setBooks(response.data);
+      setUsers(response.data);
     });
   }, []);
 
@@ -22,51 +19,49 @@ const Books =()=> {
     <Layout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Books</h1>
-          <Link href={'/books/new'} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Add New Book
+          <h1 className="text-2xl font-bold text-gray-800">users</h1>
+          <Link href={'/users/new'} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Add New User
           </Link>
         </div>
-
         <div className="overflow-x-auto bg-white shadow-md rounded-lg">
           <table className="min-w-full leading-normal">
             <thead>
               <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 text-left">Title</th>
-                <th className="py-3 px-6 text-left">Author</th>
-                <th className="py-3 px-6 text-left">Description</th>
-                <th className="py-3 px-6 text-left">Price</th>
-                <th className="py-3 px-6 text-left">createdBy</th>
-                <th className="py-3 px-6 text-left">Genre</th>
+                <th className="py-3 px-6 text-left">Firstname</th>
+                <th className="py-3 px-6 text-left">Lastname</th>
+                <th className="py-3 px-6 text-left">Email</th>
+                <th className="py-3 px-6 text-left">Contact</th>
+                <th className="py-3 px-6 text-left">idnumber</th>
+                <th className="py-3 px-6 text-left">Role</th>
                 <th className="py-3 px-6 text-center">Actions</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              {books.length > 0 ? (
-                books.map((book) => (
-                  <tr key={book._id} className="border-b border-gray-200 hover:bg-gray-100">
+              {users.length > 0 ? (
+                users.map((user) => (
+                  <tr key={user._id} className="border-b border-gray-200 hover:bg-gray-100">
                     <td className="py-3 px-6 text-left whitespace-nowrap">
-                      <span className="font-medium">{book.title}</span>
+                      <span className="font-medium">{user.firstname}</span>
                     </td>
                     <td className="py-3 px-6 text-left">
-                      {book.author}
+                      {user.lastname}
                     </td>
                     <td className="py-3 px-6 text-left">
-                      {truncateDescription(book.description, 5)}
+                      {user.email}
                     </td>
                     <td className="py-3 px-6 text-left">
-                      Ksh {book.price}
+                      {user.phonenumber}
                     </td>
                     <td className="py-3 px-6 text-left">
-                     {book.createdBy}
+                      {user.idnumber}
                     </td>
                     <td className="py-3 px-6 text-left">
-                       {book.genre}
+                      {user.role}
                     </td>
                     <td className="py-3 px-6 text-center">
                       <div className="flex item-center justify-center gap-3">
-                     
-                        <Link href={'/books/edit/' + book._id} className="text-blue-600 hover:text-blue-800">
+                        <Link href={'/users/edit/' + user._id} className="text-blue-600 hover:text-blue-800">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -82,7 +77,7 @@ const Books =()=> {
                             />
                           </svg>
                         </Link>
-                        <Link href={'/books/delete/' + book._id} className="text-red-600 hover:text-red-800">
+                        <Link href={'/users/delete/' + user._id} className="text-red-600 hover:text-red-800">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -105,7 +100,7 @@ const Books =()=> {
               ) : (
                 <tr>
                   <td colSpan="5" className="text-center py-5">
-                    No books found
+                    No users found
                   </td>
                 </tr>
               )}
@@ -116,4 +111,4 @@ const Books =()=> {
     </Layout>
   );
 }
-export default withAuth(Books,['Staff','Admin'])
+export default withAuth(Users,['Admin','Staff','DeliveryGuy'])

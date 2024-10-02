@@ -4,6 +4,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
+import { withAuth } from '@/utils/withAuth';
 
 const Genres = () => {
   const router = useRouter();
@@ -190,4 +191,4 @@ const Genres = () => {
   );
 };
 
-export default Genres;
+export default withAuth(Genres,['Admin']);

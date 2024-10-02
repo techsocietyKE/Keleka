@@ -5,6 +5,8 @@ const  BookSchema = new Schema({
     author:String,
     description:String,
     price:{type:Number, required:true},
+    createdBy:String,
+    genre:String,
     images:[{type:String}],
     category:{type:mongoose.Types.ObjectId, ref:'Category'},
     properties:{type:Object}

@@ -1,23 +1,25 @@
 import Layout from "@/components/Layout";
 import { useSession } from "next-auth/react";
+import StatsCount from "./statsCount";
 
 
 
 
 export default function Home() {
-    const {data:session} = useSession();
+  const { data: session, status } = useSession();
    
   return <Layout>
-   <div className="text-blue-900 flex justify-between ">
-          <h2>   Hello, <b>{session?.user.name}</b></h2>
-          <div className="flex bg-gray-300 text-black">
-          <div> <img src={session?.user?.image} alt="profileimage" className="w-6 h-6 rounded-lg overflow-hidden"/></div>
-          <span className="px-2">
-          {session?.user?.name}
-          </span>
-       
-          </div>
-         
+  
+   <div>
+    <h1 className="text-3xl font-bold">Welcome to the dashboard</h1>
+    <div className="flex flex-col">
+      <div>
+      <h2>   Hello, <b>{session?.user.firstname} {session?.user.lastname}</b></h2>
+      </div>
+      <div>
+        <StatsCount/>
+      </div>
+    </div>
    </div>
  </Layout>
 }

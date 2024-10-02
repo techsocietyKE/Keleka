@@ -5,7 +5,7 @@ import { Genre } from "@/models/Genre";
 export default async function handle(req,res){
    const {method} = req;
    await mongooseConnect()
-//    await isAdminRequest(req, res);
+
 
     if (method === 'GET') {
         if  (req.query.id) {

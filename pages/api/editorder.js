@@ -1,49 +1,46 @@
-import { connectToDatabase } from "@/utils/mongodb";
-import { ObjectId } from "mongodb";
 
-export default async function handler(req, res) {
-  const { id } = req.query; // Get the order ID from the query params
-  const { method } = req;
+import {mongooseConnect} from "@/lib/mongoose";
+import { Order } from "@/models/Order";
 
-  // Connect to the database
-  const { db } = await connectToDatabase();
 
-  switch (method) {
-    // Handle updating the order (PUT request)
-    case 'PUT':
-      try {
-        // Get the data from the request body
-        const { name, email, phonenumber, county, street, paid } = req.body;
 
-        // Update the order in the database
-        const result = await db.collection('orders').updateOne(
-          { _id: new ObjectId(id) },  // Find the order by its ID
-          {
-            $set: {
-              name,
-              email,
-              phonenumber,
-              county,
-              street,
-              paid
-            }
-          }
-        );
+export default async function handle(req,res){
+   const {method} = req;
+   await mongooseConnect()
 
-        if (result.modifiedCount === 0) {
-          return res.status(404).json({ message: 'Order not found or no changes made' });
+
+    if (method === 'GET') {
+        if  (req.query.id) {
+            res.json(await Order.findOne({_id:req.query.id}))
+        }else{
+            res.json(await Order.find())
         }
+    }
 
-        // Return a success message
-        return res.status(200).json({ message: 'Order updated successfully' });
-      } catch (error) {
-        console.error("Error updating order:", error);
-        return res.status(500).json({ message: 'Failed to update order' });
-      }
 
-    // Handle unsupported methods
-    default:
-      res.setHeader('Allow', ['PUT']);
-      return res.status(405).json({ message: `Method ${method} Not Allowed` });
-  }
+    if(method === 'POST'){
+        const {name,email,phonenumber,county,street,DeliveryStatus,
+            city,paymentMethod,Mpesa,paid,Delivered,Confirmed} = req.body;
+        const orderDoc =  await Order.create({
+            name,email,phonenumber,county,street,city,paymentMethod,
+            Mpesa,paid,Delivered,Confirmed,DeliveryStatus
+        })
+        res.json(orderDoc)
+    }
+
+    if (method === "PUT"){
+        const {name,email,phonenumber,county,street,city,paymentMethod
+            ,Mpesa,paid,Delivered,Confirmed,DeliveryStatus,_id
+        } = req.body;
+        
+        await Order.updateOne({_id},{name,email,phonenumber,county,DeliveryStatus,
+            street,city,paymentMethod,Mpesa,paid,Delivered,Confirmed})
+        res.json(true)
+    }
+    if (method === 'DELETE'){
+        if(req.query?.id){
+            await Order.deleteOne( { _id : req.query?.id });
+            res.json(true)
+        }
+    }
 }

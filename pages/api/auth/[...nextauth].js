@@ -1,37 +1,79 @@
-import clientPromise from '@/lib/mongodb'
-import { MongoDBAdapter } from '@auth/mongodb-adapter'
-import NextAuth, { getServerSession } from 'next-auth'
-import GoogleProvider  from "next-auth/providers/google"
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import { mongooseConnect } from "@/lib/mongoose";
+import { User } from "@/models/User";
 
-const adminEmails = ['michaelcelwin98@gmail.com'];
 export const authOptions = {
-    
-        providers:[
-            GoogleProvider({
-                clientId: process.env.GOOGLE_ID,
-                clientSecret:process.env.GOOGLE_SECRET
-            })
-        ],
-        adapter:MongoDBAdapter(clientPromise),
-        callbacks:{
-            session:({session,token,user})=>{
-                if (adminEmails.includes(session?.user?.email)){
-                return session;
-               }
-               return false;
-            }
-        }
-    
-}
-export default NextAuth (authOptions)
+  providers: [
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {},
 
-export async function isAdminRequest (req,res){
-    const session = await getServerSession(req,res,authOptions);
-    
-    if(!adminEmails.includes(session?.user?.email)){
-        res.status(401);
-        res.send();
-        throw new 'not admin'
-    } 
-   
-}
+      async authorize(credentials) {
+        const { email, password } = credentials;
+
+        try {
+          await mongooseConnect();
+          const user = await User.findOne({ email });
+
+          if (!user) {
+            console.log("No user found with this email.");
+            return null;
+          }
+
+          const passwordsMatch = await bcrypt.compare(password, user.password);
+
+          if (!passwordsMatch) {
+            console.log("Password does not match.");
+            return null;
+          }
+
+          return {
+            id: user._id.toString(),
+            email: user.email,
+            phonenumber: user.phonenumber,
+            lastname: user.lastname,
+            firstname: user.firstname,
+            role: user.role,
+          };
+        } catch (error) {
+          console.log("Error in authorize function: ", error);
+          return null;
+        }
+      },
+    }),
+  ],
+  session: {
+    strategy: "jwt",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.phonenumber = user.phonenumber;
+        token.lastname = user.lastname;
+        token.firstname = user.firstname;
+        token.role = user.role;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.phonenumber = token.phonenumber;
+        session.user.lastname = token.lastname;
+        session.user.firstname = token.firstname;
+        session.user.role = token.role;
+      }
+      return session;
+    },
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/login",
+  },
+};
+
+
+export default NextAuth(authOptions);
