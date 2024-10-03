@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { CartContext } from "./CartContext";
 import Link from "next/link";
 
-export default function BookBox({ _id, title, description, author, price, images }) {
+export default function BookBox({ _id, title, author, price, images }) {
   const { addBook } = useContext(CartContext);
   const formattedPrice = price.toLocaleString();
 
@@ -36,7 +36,7 @@ export default function BookBox({ _id, title, description, author, price, images
             {truncateTitle(title)}
           </h1>
         </Link>
-        <p className="text-sm text-gray-400 mt-1">{author}</p>
+        <p className="text-sm text-gray-400 mt-1">By {author}</p>
       </div>
 
       <div className="flex items-center justify-between w-full mt-4">

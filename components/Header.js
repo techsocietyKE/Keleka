@@ -2,10 +2,13 @@ import Link from "next/link";
 import { useContext } from "react";
 import { CartContext } from "./CartContext";
 import { signOut, useSession } from "next-auth/react"; // Import signOut from NextAuth
+import { Button,  } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const { cartBooks } = useContext(CartContext);
   const { data: session } = useSession();
+  const router = useRouter();
   const handleLogout = async () => {
     await signOut(); // Redirect to home after logout
   };
@@ -22,11 +25,11 @@ export default function Header() {
       <div className="flex gap-2 text-gray-900 items-center">
         <Link className="text-gray-300 text-lg hover:text-green-400" href="/">Home</Link>
         <Link className="text-gray-300 text-lg hover:text-green-400" href="/cart">Cart ({cartBooks.length})</Link>
+        <Link className="text-gray-300 text-lg hover:text-green-400" href="/profile">Profile</Link>
 
         {
           session?(
-           <>
-          <Link className="text-gray-300 text-lg hover:text-green-400" href="/checkoutpage">Payment</Link>
+            <>
           <button
             onClick={handleLogout}
             className="text-white text-lg bg-red-600 px-5 py-[3px] rounded-lg"

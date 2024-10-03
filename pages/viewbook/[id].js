@@ -18,6 +18,7 @@ export default function BookPage({ book }) {
         <img src={book.images[0]} alt={book.title} className="w-full md:w-[500px] h-[300px] rounded-lg shadow-md object-cover mb-4"/>
         <h1 className="md:text-2xl text-lg tracking-wider font-bold mb-4 text-gray-200">{book.title}</h1>
         <p className="mb-4 text-gray-300">{book.description}</p>
+        <p className="mb-4 text-green-400">by {book.author}</p>
       <div className='flex items-center justify-start mt-1 pr-1 pl-1'>
                 <h1 className="text-lg text-gray-100 mr-8 font-semibold">Ksh {book.price.toLocaleString()}</h1>
                 <Button

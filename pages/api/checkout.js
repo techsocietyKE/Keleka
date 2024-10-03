@@ -10,7 +10,9 @@ export default async function handle(req, res) {
     }
 
     const {
-        name, email, phoneNumber, county, city, street,total, paid, Mpesa,paymentMethod, cartBooks
+        name, email, phoneNumber, county, city,
+        street,total, paid, Mpesa,paymentMethod, cartBooks,
+        userId
     } = req.body;
 
     // Connect to the database
@@ -51,7 +53,8 @@ export default async function handle(req, res) {
         amount: total,
         paid,
         Mpesa,
-        paymentMethod
+        paymentMethod,
+        userId
     });
 
     // Send email to admin
@@ -83,5 +86,5 @@ export default async function handle(req, res) {
     });
 
     // Send the created order back with success status
-    res.status(200).json({ success: true, order: orderDoc });
+    res.status(200).json({ success: true, order: order });
 }

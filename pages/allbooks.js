@@ -15,11 +15,11 @@ export default function AllBooks({books}){
 
 export async  function getServerSideProps(){
     await mongooseConnect();
-    const books =  await Book.find({},null, {sort:{'_id':-1}});
-    return{
-        props:{
-            books:JSON.parse(JSON.stringify(books))
-        }
+  const books = await Book.find({}, null, { sort: { '_id': -1 }, limit: 4 });
+  return {
+    props: {
+      books: JSON.parse(JSON.stringify(books)),
+    },
     }
 
 }

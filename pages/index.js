@@ -19,14 +19,12 @@ export default function HomePage({ featuredbook, newBooks }) {
 }
 
 export async function getServerSideProps() {
-  const featuredBookId = '66d95b6b83c23e11870a6f56';
+  const featuredBookId = '66fb7a55ccba991ac25cfaef';
   await mongooseConnect();
 
   const featuredbook = await Book.findById(featuredBookId);
   const newBooks = await Book.find({}, null, { sort: { '_id': -1 }, limit: 8 });
 
-  // Console log the new books
-  // console.log(newBooks);
 
   return {
     props: {
