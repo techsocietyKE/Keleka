@@ -28,7 +28,13 @@ export default function Header() {
           </h1>
         </Link>
       </div>
-      <div className="menu md:hidden flex text-white">
+      <div className="menu md:hidden flex gap-2 text-white">
+      <Link className="text-gray-300 text-lg hover:text-green-400 flex items-center space-x-2" href="/cart">
+         <span className="font-semibold">Cart</span>
+         <span className="bg-green-400 text-white text-sm font-medium rounded-full px-1">
+         {cartBooks.length}
+         </span>
+         </Link>
         <button  onClick={toggleSidebar}>
 
           {isOpen?
@@ -61,17 +67,11 @@ export default function Header() {
           ):(
             <>
             <Link className="text-gray-300 text-lg hover:text-green-400" href="/login">Sign In</Link>
-            
             <Link className="text-gray-300 text-lg hover:text-green-400" href="/register">Register</Link>
             </>
           )
         }
-         <Link className="text-gray-300 text-lg hover:text-green-400 flex items-center space-x-2" href="/cart">
-         <span className="font-semibold">Cart</span>
-         <span className="bg-green-400 text-white text-sm font-medium rounded-full px-1">
-         {cartBooks.length}
-         </span>
-         </Link>
+       
       </div>
     </div>
 
@@ -90,23 +90,24 @@ export default function Header() {
 
             </button>
 
-            {/* Mobile Menu Links */}
+            
             <nav className='flex flex-col gap-4 text-lg'>
-              <Link className='hover:text-[#EB5255] transition-colors duration-300' href={"/"} onClick={toggleSidebar}>Home</Link>
-              <Link className='hover:text-[#EB5255] transition-colors duration-300' href={"/profile/profileInfo"} onClick={toggleSidebar}>Profile</Link>
-              {session?.user?.isAdmin && (
-                <Link className='hover:text-[#EB5255] transition-colors duration-300' href={"/admin/dashboard"} onClick={toggleSidebar}>Dashboard</Link>
-              )}
+            <Link className="text-gray-300 text-lg hover:text-green-400" href="/">Home</Link>
+            <Link className="text-gray-300 text-lg hover:text-green-400" href="/categories">Genres</Link>
+
               {!session && (
                 <>
-                  <Link className='hover:text-[#EB5255] transition-colors duration-300' href={"/register"} onClick={toggleSidebar}>Register</Link>
-                  <Link className='hover:text-[#EB5255] transition-colors duration-300' href={"/login"} onClick={toggleSidebar}>Login</Link>
+                 <Link className="text-gray-300 text-lg hover:text-green-400" onClick={toggleSidebar} href="/login">Sign In</Link>
+                 <Link className="text-gray-300 text-lg hover:text-green-400" onClick={toggleSidebar} href="/register">Register</Link>
                 </>
               )}
               {session && (
-                <button onClick={() => { Logout(); toggleSidebar(); }} className='hover:text-[#EB5255] transition-colors duration-300'>
+               <>
+                <Link className="text-gray-300 text-lg hover:text-green-400" href="/profile">Profile</Link>
+                <button onClick={() => { handleLogout(); toggleSidebar(); }} className='hover:text-[#EB5255] transition-colors duration-300'>
                   Logout
                 </button>
+               </>
               )}
             </nav>
           </div>
