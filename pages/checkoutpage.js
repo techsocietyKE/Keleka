@@ -107,16 +107,7 @@ const CheckoutPage = () => {
         name, phoneNumber, county, city, street, total,cartBooks,paymentMethod,
          paid: false, Mpesa: false,userId: session?.user?.id,
       });
-  
-      Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'An error occurred while processing your Order.',
-        toast: true,
-        position: 'top',
-        timer: 3000,
-        showConfirmButton: false,
-      });
+      
     } finally {
       setLoading(false);  // Reset loading state
     }
