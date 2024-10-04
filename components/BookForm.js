@@ -144,6 +144,7 @@ export default function BookForm({
         {!!images.length &&
           images.map((uploadedImage, index) => (
             <div key={index} className="h-24 bg-white p-4 shadow-sm rounded-sm border border-gray-200">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={uploadedImage}
                 alt={`Uploaded Image ${index}`}

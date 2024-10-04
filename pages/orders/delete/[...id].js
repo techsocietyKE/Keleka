@@ -26,7 +26,7 @@ export default function DeleteOrderPage() {
     }
     return (
         <Layout>
-            <h1 className="text-center">Do you really want to this order "{orderInfo ? orderInfo.name : 'this order'}"?</h1>
+            <h1 className="text-center">Do you really want to this order ?</h1>
           <div className="flex gap-2 justify-center">
             <button className="btn-red" onClick={deleteOrder}>Yes</button>
             <button className='btn-default' onClick={getBack}>No</button>

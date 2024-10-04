@@ -26,7 +26,7 @@ export default function DeleteBookPage() {
     }
     return (
         <Layout>
-            <h1 className="text-center">Do you really want to delete "{bookInfo ? bookInfo.title : 'this book'}"?</h1>
+            <h1 className="text-center">Do you really want to delete this book?</h1>
           <div className="flex gap-2 justify-center">
             <button className="btn-red" onClick={deleteBook}>Yes</button>
             <button className='btn-default' onClick={getBack}>No</button>
