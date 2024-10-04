@@ -71,7 +71,12 @@ export default function Header() {
             </>
           )
         }
-       
+       <Link className="text-gray-300 text-lg hover:text-green-400 flex items-center space-x-2" href="/cart">
+         <span className="font-semibold">Cart</span>
+         <span className="bg-green-400 text-white text-sm font-medium rounded-full px-1">
+         {cartBooks.length}
+         </span>
+         </Link>
       </div>
     </div>
 

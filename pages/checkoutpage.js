@@ -47,7 +47,7 @@ const CheckoutPage = () => {
       // Show loading message
       Swal.fire({
         title: 'Processing...',
-        text: 'Please wait while we process your payment.',
+        text: 'Please wait while we process your Order.',
         timer: 8000,
         showConfirmButton: false,
         allowOutsideClick: false,
@@ -76,10 +76,10 @@ const CheckoutPage = () => {
         console.log('Payment Success:', result);
         Swal.fire({
           icon: 'success',
-          title: 'Payment Successful!',
+          title: 'Order Successful!',
           timer: 2000,
           showConfirmButton: false,
-          position: 'center',
+          position: 'top',
         });
       } else {
         const error = await response.json();
@@ -103,8 +103,6 @@ const CheckoutPage = () => {
       router.push('/order-success')
     } catch (error) {
       console.error('Error during payment initiation:', error);
-  
-      // Save order with payment as false
       await saveOrder({ 
         name, phoneNumber, county, city, street, total,cartBooks,paymentMethod,
          paid: false, Mpesa: false,userId: session?.user?.id,
@@ -113,7 +111,7 @@ const CheckoutPage = () => {
       Swal.fire({
         icon: 'error',
         title: 'Error!',
-        text: 'An error occurred while processing your payment.',
+        text: 'An error occurred while processing your Order.',
         toast: true,
         position: 'top',
         timer: 3000,
