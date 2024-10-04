@@ -13,7 +13,7 @@ export default function BookPage({ book }) {
   return (
  <div className="bg-[#201F31]">
     <Header/>
-      <div className="flex items-center p-2 justify-start h-screen mx-auto">
+      <div className="flex items-center p-2 justify-start mt-28 h-screen mx-auto">
         <div className=" shadow-sm md:p-5 md:w-[1000px] ">
         <img src={book.images[0]} alt={book.title} className="w-full md:w-[500px] h-[300px] rounded-lg shadow-md object-cover mb-4"/>
         <h1 className="md:text-2xl text-lg tracking-wider font-bold mb-4 text-gray-200">{book.title}</h1>
