@@ -19,7 +19,7 @@ export default function HomePage({ featuredbook, newBooks }) {
 }
 
 export async function getServerSideProps() {
-  const featuredBookId = '66fb7a55ccba991ac25cfaef';
+  const featuredBookId = '6703f55705c59ae6335282dd';
   await mongooseConnect();
 
   const featuredbook = await Book.findById(featuredBookId);

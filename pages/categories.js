@@ -11,6 +11,7 @@ const Categories = () => {
   const [documentaryBooks, setDocumentaryBooks] = useState([]);
   const [kidsBooks, setKidsBooks] = useState([]);
   const [mangaBooks, setMangaBooks] = useState([]);
+  const [politicalBooks, setPoliticalBooks] = useState([]);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -23,6 +24,8 @@ const Categories = () => {
 
         const mangaResponse = await axios.get('api/categories?genre=Manga');
         setMangaBooks(mangaResponse.data);
+        const politicalResponse = await axios.get('api/categories?genre=Political');
+        setPoliticalBooks(politicalResponse.data);
       } catch (error) {
         console.error('Error fetching books:', error);
       }
@@ -100,6 +103,14 @@ const Categories = () => {
           {renderBooks(mangaBooks)}
         </div>
       </div>
+
+      <div>
+        <h1 className='text-xl ml-7 text-gray-300 tracking-wide font-semibold'>Political</h1>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-5'>
+          {renderBooks(politicalBooks)}
+        </div>
+      </div>
+
     </div>
   );
 };

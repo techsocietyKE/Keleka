@@ -10,6 +10,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      default: 'Customer',
+    },
   },
   { timestamps: true }
 );

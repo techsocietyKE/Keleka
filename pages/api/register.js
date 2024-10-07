@@ -5,12 +5,12 @@ import User from "@/models/User"; // Ensure the casing is consistent
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
-      const { email, password } = req.body; // Use req.body instead of req.json() in Node.js runtime
+      const { email, password,role } = req.body; // Use req.body instead of req.json() in Node.js runtime
       const hashedPassword = await bcrypt.hash(password, 10);
       
       // Connect to MongoDB and create the user
       await mongooseConnect();
-      const user = await User.create({ email, password: hashedPassword });
+      const user = await User.create({ email, password: hashedPassword,role });
       
       // Return the success response
       return res.status(201).json({ message: "User registered." });

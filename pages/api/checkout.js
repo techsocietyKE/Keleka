@@ -54,13 +54,14 @@ export default async function handle(req, res) {
         paid,
         Mpesa,
         paymentMethod,
-        userId
+        userId,
+
     });
 
-    // Send email to admin
+   
     gmailTransport().sendMail({
-        from: process.env.GMAIL_USER_NAME,
-        to: process.env.ADMIN_EMAIL,  // Make sure to set the admin email in .env
+        from: email,
+        to: process.env.GMAIL_USER_NAME, 
         subject: 'New Pending Order',
         html: AdminOrderNotificationEmailTemplate(book_items),
     }, (error, info) => {
@@ -71,11 +72,11 @@ export default async function handle(req, res) {
         }
     });
 
-    // Send email to client with total amount
+    
     gmailTransport().sendMail({
         from: process.env.GMAIL_USER_NAME,
-        to: email,  // Client's email
-        subject: 'Order Confirmation',
+        to: email,  
+        subject: 'Pending Order Confirmation',
         html: ClientPendingOrderEmailTemplate(book_items, totalAmount),
     }, (error, info) => {
         if (error) {

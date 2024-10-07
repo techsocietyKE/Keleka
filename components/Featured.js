@@ -34,7 +34,7 @@ export default function Featured({ book }) {
         </div>
         <div className="md:w-1/2">
           <img
-            src="https://res.cloudinary.com/drdaorvv1/image/upload/v1727756880/j5d1vimo3zvyfvmib78z.png"
+            src="https://res.cloudinary.com/drdaorvv1/image/upload/v1728312660/yuzekgz2e3hhp2taao1a.png"
             alt="Book Image"
             className="w-full h-auto md:h-full"
           />

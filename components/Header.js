@@ -9,7 +9,7 @@ export default function Header() {
   const { data: session } = useSession();
   const router = useRouter();
   const handleLogout = async () => {
-    await signOut(); // Redirect to home after logout
+    await signOut(); 
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -38,12 +38,12 @@ export default function Header() {
         <button  onClick={toggleSidebar}>
 
           {isOpen?
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
           </svg>
             :
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+           <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
            </svg>   
           }
          
@@ -59,7 +59,7 @@ export default function Header() {
             <Link className="text-gray-300 text-lg hover:text-green-400" href="/profile">Profile</Link>
           <button
             onClick={handleLogout}
-            className="text-white text-lg bg-red-600 px-5 py-[3px] rounded-lg"
+            className=" text-lg text-red-400 px-5 py-[3px] rounded-lg"
           >
             Logout
           </button>
@@ -89,8 +89,8 @@ export default function Header() {
           <div className="flex flex-col p-4">
             
             <button className="self-end mb-4 p-4" onClick={toggleSidebar}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
             </svg>
 
             </button>
