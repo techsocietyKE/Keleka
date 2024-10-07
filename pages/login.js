@@ -62,7 +62,7 @@ export default function Login() {
         className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
       >
         <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
-          Login
+          Admin Login
         </h1>
         <div className="mb-4">
           <label className="block text-gray-600 mb-2">Email</label>

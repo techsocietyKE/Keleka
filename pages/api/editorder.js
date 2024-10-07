@@ -35,7 +35,9 @@ export default async function handle(req,res){
         
         await Order.updateOne({_id},{name,email,phonenumber,county,DeliveryStatus,
             street,city,paymentMethod,Mpesa,paid,Delivered,Confirmed})
-        res.json(true)
+        res.json(true);
+
+a
     }
     if (method === 'DELETE'){
         if(req.query?.id){

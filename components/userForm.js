@@ -66,7 +66,7 @@ export default function UserForm({
               placeholder="Enter your firstname"
               value={firstname}
               onChange={(e) => setFirstname(e.target.value)}
-              required
+            
             />
           </div>
           <div className="mb-4">
@@ -77,7 +77,7 @@ export default function UserForm({
               placeholder="Enter your lastname"
               value={lastname}
               onChange={(e) => setLastname(e.target.value)}
-              required
+            
             />
           </div>
         </div>
@@ -90,7 +90,7 @@ export default function UserForm({
               placeholder="Enter ID"
               value={idnumber}
               onChange={(e) => setIdnumber(e.target.value)}
-              required
+            
             />
           </div>
           <div className="mb-4">
@@ -101,7 +101,7 @@ export default function UserForm({
               placeholder="Enter contact"
               value={phonenumber}
               onChange={(e) => setPhonenumber(e.target.value)}
-              required
+            
             />
           </div>
         </div>
@@ -113,7 +113,7 @@ export default function UserForm({
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
+          
           />
         </div>
         <div className="mb-6">
@@ -124,7 +124,7 @@ export default function UserForm({
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+          
           />
         </div>
         <div className="mb-6">
@@ -133,12 +133,13 @@ export default function UserForm({
             value={role}  // Bind to the role state
             onChange={(e) => setRole(e.target.value)}  // Update role state when selecting
             className="w-full px-4 py-2 border rounded-md text-gray-800"
-            required
+          
           >
             <option value="">Select a Role</option>
             <option value="Admin">Admin</option>
             <option value="Staff">Staff</option>
             <option value="DeliveryGuy">Delivery Guy</option>
+            <option value="Customer">Customer</option>
           </select>
         </div>
 
