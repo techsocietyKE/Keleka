@@ -11,7 +11,7 @@ export default function OrderForm({
   amount: existingAmount,
   paid: existingPaid,
   Confirmed: existingConfirmed,
-  DeliveryStatus: existingDeliveryStatus, // Updated to fetch existing DeliveryStatus
+  DeliveryStatus: existingDeliveryStatus,
 }) {
   const { data: session } = useSession();
   const [name, setName] = useState(existingName || "");
@@ -19,10 +19,9 @@ export default function OrderForm({
   const [phonenumber, setPhoneNumber] = useState(existingPhoneNumber || "");
   const [amount, setAmount] = useState(existingAmount || "");
   
-  // Add state for the boolean fields
   const [paid, setPaid] = useState(existingPaid || false);
   const [Confirmed, setConfirmed] = useState(existingConfirmed || false);
-  const [DeliveryStatus, setDeliveryStatus] = useState(existingDeliveryStatus || "Pending"); // Default to "Pending"
+  const [DeliveryStatus, setDeliveryStatus] = useState(existingDeliveryStatus || "Pending");
 
   const router = useRouter();
 
@@ -35,7 +34,7 @@ export default function OrderForm({
       amount,
       paid,
       Confirmed,
-      DeliveryStatus, // Include the DeliveryStatus in the data object
+      DeliveryStatus,
     };
 
     if (_id) {
@@ -47,15 +46,35 @@ export default function OrderForm({
     router.push("/orders");
   }
 
-  const isAdmin = session?.user?.role === "Admin";
-  const isStaff = session?.user?.role === "Staff";
+  const sendDeliveryEmail = async () => {
+    try {
+      const response = await axios.post('/api/send-delivery-email', {
+        email: email, 
+        subject: 'Incoming Keleka Bookshop Delivery',
+
+
+        message: `Hi ${name}, your order will be delivered in two days.`
+      });
+
+      if (response.data.success) {
+        alert('Delivery email sent successfully');
+      } else {
+        alert('Failed to send email');
+      }
+    } catch (error) {
+      console.error('Error sending delivery email:', error);
+      alert('Error sending email');
+    }
+  };
+
   const isDeliveryGuy = session?.user?.role === "DeliveryGuy";
 
   return (
-    <form
-      onSubmit={saveOrder}
-      className="p-4 bg-white rounded-lg shadow-lg max-w-2xl mx-auto"
-    >
+    <div>
+      <form
+        onSubmit={saveOrder}
+        className="p-4 bg-white rounded-lg shadow-lg max-w-2xl mx-auto"
+      >
       <h2 className="text-xl font-semibold mb-4">Update Order </h2>
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">Amount</label>
@@ -69,7 +88,7 @@ export default function OrderForm({
         />
       </div>
 
-      {/* Select for Delivery Status */}
+      
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">Delivery Status</label>
         <select
@@ -83,7 +102,7 @@ export default function OrderForm({
         </select>
       </div>
 
-      {/* Checkbox for 'Paid' */}
+      
       <div className="flex items-center py-3">
         <label className="block text-gray-700 mb-2">Paid</label>
         <input
@@ -116,12 +135,21 @@ export default function OrderForm({
         </div>
       )}
 
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white rounded-lg py-2 mt-4 hover:bg-blue-700 transition"
+        >
+          Update Details
+        </button>
+      </form>
+
       <button
-        type="submit"
-        className="w-full bg-blue-600 text-white rounded-lg py-2 mt-4 hover:bg-blue-700 transition"
+        type="button"
+        className="w-full bg-green-600 text-white rounded-lg py-2 mt-4 hover:bg-green-700 transition"
+        onClick={sendDeliveryEmail}
       >
-        Update Details
+        Notify for Delivery
       </button>
-    </form>
+    </div>
   );
 }
