@@ -53,6 +53,7 @@ export default async function handle(req, res) {
         amount: total,
         paid,
         Mpesa,
+        email,
         paymentMethod,
         userId,
 
