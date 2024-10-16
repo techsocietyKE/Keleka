@@ -20,10 +20,10 @@ export default function Nav({ show }) {
     <aside
       className={
         (show ? "left-0" : "-left-full ") +
-        "text-gray-800 top-0 font-semibold p-4 pr-0 fixed w-full bg-indigo-100 h-full md:static md:w-auto transition-all"
+        "text-gray-800 top-0 font-semibold p-8 pr-0 fixed w-full bg-indigo-100 h-full md:static md:w-auto transition-all"
       }
     >
-      <div className="mb-3 mr-2">
+      <div className="mb-3 mr-4 mt-8">
         <Logo />
       </div>
       <nav className="flex flex-col gap-2">
@@ -154,13 +154,6 @@ export default function Nav({ show }) {
             </Link>
           </>
         )}
-
-<button
-          onClick={() => signOut()}
-          className="bg-red-500 text-white font-bold px-6 py-2 mt-3"
-        >
-          Log Out
-        </button>
       </nav>
     </aside>
   );
