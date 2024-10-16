@@ -25,7 +25,7 @@ export default function Logo() {
         />
       </svg>
       <span>
-        Keleka Bookshop 
+        Tuk Cafeteria  
       </span>
 
     </Link>

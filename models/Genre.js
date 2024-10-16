@@ -1,8 +1,8 @@
 import mongoose,{Schema, model, models} from "mongoose";
 
-const GenreSchema = new Schema ({
-   genrename:String,
+const CategorySchema = new Schema ({
+   CategorySchemaname:String,
 },{
     timestamps:true
 })
-export const Genre = models?.Genre || model ('Genre', GenreSchema)
+export const Category = models?.Category || model ('Category', CategorySchema)

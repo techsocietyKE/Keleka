@@ -6,7 +6,7 @@ import { withAuth } from '@/utils/withAuth';
 
 const StatsCount = () => {
   const { data: session, status } = useSession(); // Access session data
-  const [bookCount, setBookCount] = useState(0);
+  const [mealCount, setMealCount] = useState(0);
   const [orderCount, setOrderCount] = useState(0);
   const [userCount, setUserCount] = useState(0);
   const [pendingDeliveryCount,setPendingDeliveryCount]= useState(0)
@@ -16,9 +16,9 @@ const StatsCount = () => {
   const isDeliveryGuy = session?.user?.role === "DeliveryGuy";
 
   useEffect(() => {
-    // Fetch books count
-    axios.get('/api/count/bookCount').then(response => {
-      setBookCount(response.data.count);
+    
+    axios.get('/api/count/mealCount').then(response => {
+      setMealCount(response.data.count);
     }).catch(error => console.error('Error fetching books count:', error));
 
     // Fetch orders count
@@ -49,8 +49,8 @@ const StatsCount = () => {
       {isAdmin && (
         <>
         <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-gray-700">Total Books</h2>
-          <p className="text-3xl font-bold text-green-500 mt-4">{bookCount}</p>
+          <h2 className="text-lg font-semibold text-gray-700">Total Meals</h2>
+          <p className="text-3xl font-bold text-green-500 mt-4">{mealCount}</p>
         </div>
         
         <div className="bg-white shadow-md rounded-lg p-6">

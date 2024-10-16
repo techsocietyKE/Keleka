@@ -3,8 +3,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function DeleteBookPage() {
-    const [genreInfo, setGenreInfo] = useState(null); // Set initial state to null
+export default function DeleteMealPage() {
+    const [mealInfo, setMealInfo] = useState(null); 
     const router = useRouter();
     const { id } = router.query;
 
@@ -12,23 +12,23 @@ export default function DeleteBookPage() {
         if (!id) {
             return;
         }
-        axios.get('/api/genres?id=' + id).then(response => {
-            setGenreInfo(response.data);
+        axios.get('/api/meals?id=' + id).then(response => {
+            setMealInfo(response.data);
         });
-    }, [id]); // Add id as a dependency to useEffect
+    }, [id]); 
 
     function getBack() {
-        router.push('/genres');
+        router.push('/meals');
     }
-    async function deleteGenre(){
-       await axios.delete('/api/genres?id='+id)
+    async function deleteMeal(){
+       await axios.delete('/api/meals?id='+id)
        getBack();
     }
     return (
         <Layout>
-            <h1 className="text-center">Do you really want to delete this Genre</h1>
+            <h1 className="text-center">Do you really want to delete this meal?</h1>
           <div className="flex gap-2 justify-center">
-            <button className="btn-red" onClick={deleteGenre}>Yes</button>
+            <button className="btn-red" onClick={deleteMeal}>Yes</button>
             <button className='btn-default' onClick={getBack}>No</button>
           </div>
         </Layout>

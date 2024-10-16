@@ -4,17 +4,16 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-// Utility function to truncate description
 const truncateDescription = (description, wordLimit) => {
   return description.split(" ").slice(0, wordLimit).join(" ") + (description.split(" ").length > wordLimit ? "..." : "");
 };
-const Books =()=> {
-  const [books, setBooks] = useState([]);
+const Meals =()=> {
+  const [meals, setMeals] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/books').then((response) => {
+    axios.get('/api/meals').then((response) => {
       console.log(response.data);
-      setBooks(response.data);
+      setMeals(response.data);
     });
   }, []);
 
@@ -22,9 +21,9 @@ const Books =()=> {
     <Layout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Books</h1>
-          <Link href={'/books/new'} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Add New Book
+          <h1 className="text-2xl font-bold text-gray-800">Meals</h1>
+          <Link href={'/meals/new'} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Add New Meal
           </Link>
         </div>
 
@@ -32,41 +31,50 @@ const Books =()=> {
           <table className="min-w-full leading-normal">
             <thead>
               <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 text-left">Title</th>
-                <th className="py-3 px-6 text-left">Author</th>
+              <th className="py-3 px-6 text-left">Image</th>
+                <th className="py-3 px-6 text-left">Name</th>
                 <th className="py-3 px-6 text-left">Description</th>
                 <th className="py-3 px-6 text-left">Price</th>
                 <th className="py-3 px-6 text-left">createdBy</th>
-                <th className="py-3 px-6 text-left">Genre</th>
                 <th className="py-3 px-6 text-center">Actions</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              {books.length > 0 ? (
-                books.map((book) => (
-                  <tr key={book._id} className="border-b border-gray-200 hover:bg-gray-100">
+              {meals.length > 0 ? (
+                meals.map((meal) => (
+                  <tr key={meal._id} className="border-b border-gray-200 hover:bg-gray-100">
                     <td className="py-3 px-6 text-left whitespace-nowrap">
-                      <span className="font-medium">{book.title}</span>
+                     
+                     
+                      <div className="h-24 bg-white p-1 shadow-md rounded-sm border border-gray-200">
+                      <img
+                      src={meal.images}
+                      className="rounded-lg w-full h-full object-cover"
+                      />
+                      </div>
+                    </td>
+                    <td className="py-3 px-6 text-left whitespace-nowrap">
+                      <span className="font-medium">{meal.name}</span>
                     </td>
                     <td className="py-3 px-6 text-left">
-                      {book.author}
+                      {truncateDescription(meal.description, 5)}
                     </td>
                     <td className="py-3 px-6 text-left">
-                      {truncateDescription(book.description, 5)}
+                      Ksh {meal.price}
                     </td>
                     <td className="py-3 px-6 text-left">
-                      Ksh {book.price}
-                    </td>
-                    <td className="py-3 px-6 text-left">
-                     {book.createdBy}
-                    </td>
-                    <td className="py-3 px-6 text-left">
-                       {book.genre}
+                     {meal.createdBy}
                     </td>
                     <td className="py-3 px-6 text-center">
                       <div className="flex item-center justify-center gap-3">
-                     
-                        <Link href={'/books/edit/' + book._id} className="text-blue-600 hover:text-blue-800">
+                      <Link href={'/meals/view/' + meal._id} className="text-blue-600 hover:text-blue-800">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+  <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+  <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clip-rule="evenodd" />
+</svg>
+
+                        </Link>
+                        <Link href={'/meals/edit/' + meal._id} className="text-blue-600 hover:text-blue-800">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -82,7 +90,7 @@ const Books =()=> {
                             />
                           </svg>
                         </Link>
-                        <Link href={'/books/delete/' + book._id} className="text-red-600 hover:text-red-800">
+                        <Link href={'/meals/delete/' + meal._id} className="text-red-600 hover:text-red-800">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -105,7 +113,7 @@ const Books =()=> {
               ) : (
                 <tr>
                   <td colSpan="5" className="text-center py-5">
-                    No books found
+                    No meals found
                   </td>
                 </tr>
               )}
@@ -116,4 +124,4 @@ const Books =()=> {
     </Layout>
   );
 }
-export default withAuth(Books,['Staff','Admin'])
+export default withAuth(Meals,['Staff','Admin'])

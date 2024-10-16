@@ -1,28 +1,29 @@
-import BookForm from "@/components/BookForm";
+
 import Layout from "@/components/Layout";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import MealForm from "@/components/MealForm";
 
-export default function EditProductPage(){
-    const [bookInfo,setBookInfo] = useState(null)
+export default function EditMealPage(){
+    const [mealInfo,setMealInfo] = useState(null)
     const  router = useRouter();
     const {id} = router.query;
     useEffect(() => {
         if(!id){
             return;
         }
-     axios.get('/api/books?id=' +id).then(response=>{
-        setBookInfo(response.data)
+     axios.get('/api/meals?id=' +id).then(response=>{
+        setMealInfo(response.data)
      })
       
     }, [id])
     
     return(
         <Layout>
-             <h1>Edit Book</h1>
-             {bookInfo &&(
-                  <BookForm {...bookInfo}/>
+             <h1>Edit Meal</h1>
+             {mealInfo &&(
+                  <MealForm {...mealInfo}/>
              )}
           
         </Layout>

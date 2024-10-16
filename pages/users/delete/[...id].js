@@ -3,7 +3,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function DeleteBookPage() {
+export default function DeleteMealPage() {
     const [userInfo, setUserInfo] = useState(null); // Set initial state to null
     const router = useRouter();
     const { id } = router.query;

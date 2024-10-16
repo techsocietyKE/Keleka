@@ -50,7 +50,7 @@ export default function OrderForm({
     try {
       const response = await axios.post('/api/send-delivery-email', {
         email: email, 
-        subject: 'Incoming Keleka Bookshop Delivery',
+        subject: 'Incoming Tuk Cafeteria  Delivery',
 
 
         message: `Hi ${name}, your order will be delivered in two days.`
