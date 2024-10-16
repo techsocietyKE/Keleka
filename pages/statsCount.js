@@ -31,10 +31,6 @@ const StatsCount = () => {
       setUserCount(response.data.count);
     }).catch(error => console.error('Error fetching users count:', error));
 
-    axios.get('/api/count/pendingDeliveryCount').then(response => {
-      setPendingDeliveryCount(response.data.count);
-    }).catch(error => console.error('Error fetching order count:', error));
-
 })
 
   if (status === 'loading') {
@@ -57,12 +53,7 @@ const StatsCount = () => {
           <h2 className="text-lg font-semibold text-gray-700">Orders</h2>
           <p className="text-3xl font-bold text-blue-500 mt-4">{orderCount}</p>
         </div>
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-gray-700">Pending Deliveries</h2>
-          <p className="text-3xl font-bold text-blue-500 mt-4">{pendingDeliveryCount}</p>
-        </div>
-
-        <div className="bg-white shadow-md rounded-lg p-6">
+       <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-lg font-semibold text-gray-700">Users</h2>
           <p className="text-3xl font-bold text-yellow-500 mt-4">{userCount}</p>
         </div>
