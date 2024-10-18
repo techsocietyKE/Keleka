@@ -8,31 +8,35 @@ export default function MealForm({
   _id,
   name: existingName,
   description: existingDescription,
-  price: existingPrice,
-  images: existingImages, // Assuming this should now handle only one image
-  properties: existingProperties,
+  price: existingPrice = [],  // Initialize prices to an empty array if undefined
+  image: existingImages,
+  category: existingCategory = [], // Initialize category as an array for multiple selections
 }) {
   const { data: session } = useSession();
-  const [name, setName] = useState(existingName || "");
-  const [description, setDescription] = useState(existingDescription || "");
-  const [price, setPrice] = useState(existingPrice || "");
-  const [image, setImage] = useState(existingImages?.[0] || ""); // Handle only one image
-  const [isUploading, setIsUploading] = useState(false);
-  const [properties, setProperties] = useState(existingProperties || {});
-  const [propertyName, setPropertyName] = useState("");  // New property name
-  const [propertyValue, setPropertyValue] = useState("");  // New property value
   const router = useRouter();
 
+  // Initialize form states
+  const [name, setName] = useState(existingName || "");
+  const [description, setDescription] = useState(existingDescription || "");
+  const [priceInput, setPriceInput] = useState(""); // Input field for adding a price
+  const [prices, setPrices] = useState(existingPrice || []); // Array to hold price values
+  const [image, setImage] = useState(existingImages || "");
+  const [category, setCategory] = useState(existingCategory || []); // Change to an array to hold selected categories
+  const [isUploading, setIsUploading] = useState(false);
+
+  // Save Meal Handler
   async function saveMeal(ev) {
     ev.preventDefault();
     const data = {
       name,
       description,
-      price,
-      images: [image], // Send only one image in the array
-      properties,  // Include the properties object
+      prices, // Save the array of prices
+      image,
+      category, // Save selected categories as an array
       createdBy: session?.user?.firstname,
     };
+
+    // Call API for update or create meal
     if (_id) {
       await axios.put("/api/meals", { ...data, _id });
     } else {
@@ -41,8 +45,9 @@ export default function MealForm({
     router.push("/meals");
   }
 
+  // Upload image handler
   async function uploadImage(ev) {
-    const file = ev.target?.files[0]; // Only allow one file
+    const file = ev.target?.files[0];
     setIsUploading(true);
     if (file) {
       const data = new FormData();
@@ -52,38 +57,33 @@ export default function MealForm({
         body: data,
       });
       const uploadedImage = await res.json();
-      setImage(uploadedImage[0]); // Set the single image
+      setImage(uploadedImage[0]);
       setIsUploading(false);
     }
   }
 
-  // Handle adding property values
-  function addProperty() {
-    if (propertyName && propertyValue) {
-      const updatedValues = properties[propertyName] ? [...properties[propertyName], propertyValue] : [propertyValue];
-      setProperties({
-        ...properties,
-        [propertyName]: updatedValues,
-      });
-      setPropertyName("");
-      setPropertyValue("");
+  // Add Price to the list
+  function addPrice() {
+    if (priceInput && !isNaN(priceInput)) {
+      setPrices([...prices, parseFloat(priceInput)]); // Add new price to array
+      setPriceInput(""); // Clear input field
     }
   }
 
-  // Remove a specific property value
-  function removePropertyValue(propName, value) {
-    const updatedValues = properties[propName]?.filter((val) => val !== value);
-    setProperties({
-      ...properties,
-      [propName]: updatedValues.length ? updatedValues : undefined,  // Remove the property if no values are left
-    });
+  // Remove price from the list
+  function removePrice(index) {
+    const updatedPrices = prices.filter((_, i) => i !== index); // Remove price by index
+    setPrices(updatedPrices);
   }
 
-  // Remove the entire property
-  function removeProperty(propName) {
-    const updatedProperties = { ...properties };
-    delete updatedProperties[propName];
-    setProperties(updatedProperties);
+  // Handle category selection via checkboxes
+  function handleCategoryChange(ev) {
+    const selectedCategory = ev.target.value;
+    setCategory(prevCategory =>
+      prevCategory.includes(selectedCategory)
+        ? prevCategory.filter(c => c !== selectedCategory) // Remove if already selected
+        : [...prevCategory, selectedCategory] // Add if not selected
+    );
   }
 
   return (
@@ -94,7 +94,7 @@ export default function MealForm({
       <input
         className="w-full border border-gray-300 rounded-lg p-2 mb-4 outline-none focus:border-blue-500"
         type="text"
-        placeholder="meal name"
+        placeholder="Meal name"
         value={name}
         onChange={(ev) => setName(ev.target.value)}
       />
@@ -118,13 +118,7 @@ export default function MealForm({
             />
           </div>
         )}
-
-        {isUploading && (
-          <div className="h-24 w-24 flex items-center justify-center">
-            <Spinner />
-          </div>
-        )}
-
+        {isUploading && <Spinner />}
         {!image && (
           <label className="w-24 h-24 flex items-center justify-center text-gray-500 rounded-lg bg-gray-200 cursor-pointer">
             <span>Upload</span>
@@ -133,70 +127,75 @@ export default function MealForm({
         )}
       </div>
 
-      <label className="block text-gray-700 mb-2">Starting Price (in Ksh)</label>
+      {/* Price Input Section */}
+      <label className="block text-gray-700 mb-2">Add Prices (in Ksh)</label>
       <input
-        className="w-full border border-gray-300 rounded-lg p-2 mb-4 outline-none focus:border-blue-500"
+        className="w-full border border-gray-300 rounded-lg p-2 mb-2 outline-none focus:border-blue-500"
         type="number"
-        placeholder="Price"
-        value={price}
-        onChange={(ev) => setPrice(ev.target.value)}
+        placeholder="Add price"
+        value={priceInput}
+        onChange={(ev) => setPriceInput(ev.target.value)}
       />
-
-      {/* New Section for Adding Properties */}
-      <h3 className="text-lg font-medium mb-2">Add Meal Properties</h3>
-
-      <label className="block text-gray-700 mb-2">Property Name</label>
-      <input
-        className="w-full border border-gray-300 rounded-lg p-2 mb-4 outline-none focus:border-blue-500"
-        type="text"
-        placeholder="e.g. size, price"
-        value={propertyName}
-        onChange={(ev) => setPropertyName(ev.target.value)}
-      />
-
-      <label className="block text-gray-700 mb-2">Property Values</label>
-      <input
-        className="w-full border border-gray-300 rounded-lg p-2 mb-4 outline-none focus:border-blue-500"
-        type="text"
-        placeholder="Add value (e.g. Large, Medium)"
-        value={propertyValue}
-        onChange={(ev) => setPropertyValue(ev.target.value)}
-      />
-
-      <button type="button" onClick={addProperty} className="bg-green-600 text-white rounded-lg py-2 px-4 mb-4">
-        Add Property
+      <button
+        type="button"
+        onClick={addPrice}
+        className="bg-green-600 text-white rounded-lg py-2 px-4 mb-4"
+      >
+        Add Price
       </button>
 
-      {/* Displaying Added Properties */}
-      {Object.keys(properties).map((propName) => (
-        <li key={propName} className="mb-2">
-          <strong>{propName}:</strong>{" "}
-          {Array.isArray(properties[propName]) && properties[propName].length > 0
-            ? properties[propName].join(", ")
-            : "No values"}
-          <button
-            onClick={() => removeProperty(propName)}
-            className="ml-4 text-red-600 hover:underline"
-          >
-            Remove Property
-          </button>
-          {Array.isArray(properties[propName]) && properties[propName].length > 0 && (
-            <ul className="list-disc pl-5 mt-2">
-              {properties[propName].map((value, index) => (
-                <li key={index}>
-                  {value}
-                  <button
-                    onClick={() => removePropertyValue(propName, value)}
-                    className="ml-2 text-red-600 hover:underline"
-                  >
-                    Remove Value
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </li>
-      ))}
+      {/* Display and Remove Prices */}
+      {prices.length > 0 && (
+        <ul className="list-disc pl-5">
+          {prices.map((price, index) => (
+            <li key={index}>
+              {price} Ksh
+              <button
+                type="button"
+                onClick={() => removePrice(index)}
+                className="ml-4 text-red-600 hover:underline"
+              >
+                Remove
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Category Selection with Checkboxes */}
+      <label className="block text-gray-700 mb-2">Select Categories</label>
+      <div className="mb-4">
+        <label className="inline-flex items-center mr-4">
+          <input
+            type="checkbox"
+            value="Breakfast"
+            checked={category.includes("Breakfast")}
+            onChange={handleCategoryChange}
+            className="form-checkbox"
+          />
+          <span className="ml-2">Breakfast</span>
+        </label>
+        <label className="inline-flex items-center mr-4">
+          <input
+            type="checkbox"
+            value="Lunch"
+            checked={category.includes("Lunch")}
+            onChange={handleCategoryChange}
+            className="form-checkbox"
+          />
+          <span className="ml-2">Lunch</span>
+        </label>
+        <label className="inline-flex items-center mr-4">
+          <input
+            type="checkbox"
+            value="Supper"
+            checked={category.includes("Supper")}
+            onChange={handleCategoryChange}
+            className="form-checkbox"
+          />
+          <span className="ml-2">Supper</span>
+        </label>
+      </div>
 
       <button
         type="submit"

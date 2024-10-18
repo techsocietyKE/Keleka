@@ -34,8 +34,9 @@ const Meals =()=> {
               <th className="py-3 px-6 text-left">Image</th>
                 <th className="py-3 px-6 text-left">Name</th>
                 <th className="py-3 px-6 text-left">Description</th>
+                <th className="py-3 px-6 text-left">Category</th>
                 <th className="py-3 px-6 text-left">Price</th>
-                <th className="py-3 px-6 text-left">createdBy</th>
+                <th className="py-3 px-6 text-left">AddedBy</th>
                 <th className="py-3 px-6 text-center">Actions</th>
               </tr>
             </thead>
@@ -48,7 +49,7 @@ const Meals =()=> {
                      
                       <div className="h-24 bg-white p-1 shadow-md rounded-sm border border-gray-200">
                       <img
-                      src={meal.images}
+                      src={meal.image}
                       className="rounded-lg w-full h-full object-cover"
                       />
                       </div>
@@ -60,8 +61,28 @@ const Meals =()=> {
                       {truncateDescription(meal.description, 5)}
                     </td>
                     <td className="py-3 px-6 text-left">
-                      Ksh {meal.price}
-                    </td>
+  {meal.category && meal.category.length > 0 ? (
+    <ul>
+      {meal.category.map((category, index) => (
+        <li key={index}> {category}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>Not Speicified</span>
+  )}
+</td>
+                    <td className="py-3 px-6 text-left">
+  {meal.prices && meal.prices.length > 0 ? (
+    <ul>
+      {meal.prices.map((price, index) => (
+        <li key={index}>Ksh {price}</li>
+      ))}
+    </ul>
+  ) : (
+    <span>No prices available</span>
+  )}
+</td>
+
                     <td className="py-3 px-6 text-left">
                      {meal.createdBy}
                     </td>
