@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { CartContext } from "@/components/CartContext";
+import { CartContext } from "@/components/AppProvider";
 import axios from "axios";
 import Header from "../components/Header";
 import { Button, Input, Box, Text, RadioGroup, Stack, Radio, useToast } from "@chakra-ui/react";

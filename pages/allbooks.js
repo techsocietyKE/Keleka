@@ -1,4 +1,4 @@
-import BooksGrid from "@/components/BooksGrid";
+import BooksGrid from "@/components/MealsGrid";
 import Header from "@/components/Header";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Book } from "@/models/Book";

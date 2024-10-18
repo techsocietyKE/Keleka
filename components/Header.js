@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { useContext, useState } from "react";
-import { CartContext } from "./CartContext";
+import { CartContext } from "./AppProvider";
 import { signOut, useSession } from "next-auth/react"; 
 import { useRouter } from "next/navigation";
 
 export default function Header() {
-  const { cartBooks } = useContext(CartContext);
+  const { cartProducts} = useContext(CartContext);
+  console.log(cartProducts)
   const { data: session } = useSession();
   const router = useRouter();
   const handleLogout = async () => {
@@ -20,21 +21,22 @@ export default function Header() {
 
   return (
     <div>
-       <div className="fixed top-0 left-0 w-full bg-[#201F31] p-6 px-4 flex items-center justify-between z-50 shadow-md">
+       <div className="fixed top-0 left-0 w-full bg-white p-4 px-4 flex items-center justify-between z-50 shadow-sm">
       <div>
         <Link href="/">
-          <h1 className="text-gray-100 md:text-3xl text-xl font-bold tracking-widest">
-            Keleka Bookshop
+          <h1 className="text-gray-900 md:text-2xl text-xl font-bold tracking-widest">
+            Tuk Cafeteria
           </h1>
         </Link>
       </div>
-      <div className="menu md:hidden flex gap-2 text-white">
-      <Link className="text-gray-300 text-lg hover:text-green-400 flex items-center space-x-2" href="/cart">
-         <span className="font-semibold">Cart</span>
-         <span className="bg-green-400 text-white text-sm font-medium rounded-full px-1">
-         {cartBooks.length}
-         </span>
-         </Link>
+      <div className="menu md:hidden flex gap-2 text-gray-200">
+    
+
+    
+         
+          <Link className="text-black" href={'/cart'}>Cart ({cartProducts.length})</Link>
+        
+      
         <button  onClick={toggleSidebar}>
 
           {isOpen?
@@ -51,12 +53,12 @@ export default function Header() {
           
       </div>
       <div className="md:flex hidden gap-2 text-gray-900 items-center">
-        <Link className="text-gray-300 text-lg hover:text-green-400" href="/">Home</Link>
-        <Link className="text-gray-300 text-lg hover:text-green-400" href="/categories">Genres</Link>
+        <Link className="text-gray-700 text-lg hover:text-primary" href="/">Home</Link>
+        <Link className="text-gray-700 text-lg hover:text-primary" href="/menu">Menu</Link>
         {
           session?(
             <>
-            <Link className="text-gray-300 text-lg hover:text-green-400" href="/profile">Profile</Link>
+            <Link className="text-gray-700 text-lg hover:text-primary" href="/profile">Profile</Link>
           <button
             onClick={handleLogout}
             className=" text-lg text-red-400 px-5 py-[3px] rounded-lg"
@@ -66,17 +68,12 @@ export default function Header() {
            </>
           ):(
             <>
-            <Link className="text-gray-300 text-lg hover:text-green-400" href="/login">Sign In</Link>
-            <Link className="text-gray-300 text-lg hover:text-green-400" href="/register">Register</Link>
+            <Link className="text-gray-700 text-lg hover:text-primary" href="/login">Sign In</Link>
+            <Link className="text-gray-700 text-lg hover:text-primary" href="/register">Register</Link>
             </>
           )
         }
-       <Link className="text-gray-300 text-lg hover:text-green-400 flex items-center space-x-2" href="/cart">
-         <span className="font-semibold">Cart</span>
-         <span className="bg-green-400 text-white text-sm font-medium rounded-full px-1">
-         {cartBooks.length}
-         </span>
-         </Link>
+       <Link className="text-black" href={'/cart'}>Cart ({cartProducts.length})</Link>
       </div>
     </div>
 
@@ -97,18 +94,18 @@ export default function Header() {
 
             
             <nav className='flex flex-col gap-4 text-lg'>
-            <Link className="text-gray-300 text-lg hover:text-green-400" href="/">Home</Link>
-            <Link className="text-gray-300 text-lg hover:text-green-400" href="/categories">Genres</Link>
+            <Link className="text-gray-700 text-lg hover:text-primary" href="/">Home</Link>
+            <Link className="text-gray-700 text-lg hover:text-primary" href="/categories">Genres</Link>
 
               {!session && (
                 <>
-                 <Link className="text-gray-300 text-lg hover:text-green-400" onClick={toggleSidebar} href="/login">Sign In</Link>
-                 <Link className="text-gray-300 text-lg hover:text-green-400" onClick={toggleSidebar} href="/register">Register</Link>
+                 <Link className="text-gray-700 text-lg hover:text-primary" onClick={toggleSidebar} href="/login">Sign In</Link>
+                 <Link className="text-gray-700 text-lg hover:text-primary" onClick={toggleSidebar} href="/register">Register</Link>
                 </>
               )}
               {session && (
                <>
-                <Link className="text-gray-300 text-lg hover:text-green-400" href="/profile">Profile</Link>
+                <Link className="text-gray-700 text-lg hover:text-primary" href="/profile">Profile</Link>
                 <button onClick={() => { handleLogout(); toggleSidebar(); }} className='hover:text-[#EB5255] transition-colors duration-300'>
                   Logout
                 </button>

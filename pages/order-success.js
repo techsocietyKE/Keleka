@@ -6,7 +6,7 @@ export default function OrderSuccessPage() {
       
        <div>
         <Header />
-        <div className="bg-[#201F31] h-screen flex flex-col items-center justify-center text-center">
+        <div className="bg-white h-screen flex flex-col items-center justify-center text-center">
             
             <div className="p-6 bg-green-500 text-white rounded-lg shadow-lg">
                 <h1 className="text-2xl font-semibold mb-4">Order Placed Successfully!</h1>

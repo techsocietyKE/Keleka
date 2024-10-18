@@ -1,35 +1,39 @@
 import Featured from "@/components/Featured";
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import NewBooks from "@/components/NewBooks";
 import { mongooseConnect } from "@/lib/mongoose";
-import { Book } from "@/models/Book";
+import { Meal } from "@/models/Meal";
 import { Divider } from '@chakra-ui/react';
+import PopularMenu from "./popularmenu";
 
-export default function HomePage({ featuredbook, newBooks }) {
+
+
+export default function HomePage({ featuredmeal, newMeals }) {
   return (
-    <div className="bg-[#201F31]">
+    <div className="bg-white">
       <Header />
-      <Featured book={featuredbook} />
-      {/* <Hero/> */}
+      <Featured meal={featuredmeal} />
+
       <Divider />
-      <NewBooks books={newBooks} />
+      <PopularMenu/>
     </div>
   );
 }
 
 export async function getServerSideProps() {
-  const featuredBookId = '6703f55705c59ae6335282dd';
+  const featuredMealId = '671230469ec68b0507c89949';
   await mongooseConnect();
 
-  const featuredbook = await Book.findById(featuredBookId);
-  const newBooks = await Book.find({}, null, { sort: { '_id': -1 }, limit: 8 });
+  const featuredmeal = await Meal.findById(featuredMealId);
+  const newMeals = await Meal.find({}, null, { sort: { '_id': -1 }, limit: 8 });
+
+  console.log('Featured Meal:', featuredmeal); 
+    console.log('New Meals:', newMeals);
 
 
   return {
     props: {
-      featuredbook: JSON.parse(JSON.stringify(featuredbook)),
-      newBooks: JSON.parse(JSON.stringify(newBooks)),
+      featuredmeal: JSON.parse(JSON.stringify(featuredmeal)),
+      newMeals: JSON.parse(JSON.stringify(newMeals)),
     }
   };
 }

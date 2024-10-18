@@ -63,7 +63,7 @@ const MyOrders = () => {
     );
 
   return (
-    <div className="bg-[#201F31] md:p-4 p-2">
+    <div className="bg-white md:p-4 p-2">
       {personalInfo ? (
         <div>
           <h1 className="text-gray-100 pt-12">Personal Information</h1>

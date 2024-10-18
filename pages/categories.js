@@ -4,7 +4,7 @@ import axios from 'axios'; // To fetch data from your API
 import Link from 'next/link';
 import { Button } from '@chakra-ui/react';
 import { HiShoppingCart } from 'react-icons/hi';
-import { CartContext } from '@/components/CartContext';
+import { CartContext } from '@/components/AppProvider';
 
 const Categories = () => {
     const { addBook } = useContext(CartContext);
@@ -77,7 +77,7 @@ const Categories = () => {
   };
 
   return (
-    <div className='bg-[#201F31] min-h-screen'>
+    <div className='bg-white min-h-screen'>
       <Header />
       <div className='mt-20'>
         <h1 className='text-3xl ml-5 text-gray-200 tracking-widest font-semibold'>Categories</h1>

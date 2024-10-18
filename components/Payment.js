@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Button, Input, Radio, RadioGroup, Stack, Box, Text } from '@chakra-ui/react';
 import Header from '@/components/Header';
 import withAuth from '@/utils/withAuth';
-import { CartContext } from '@/components/CartContext';
+import { CartContext } from '@/components/AppProvider';
 import Swal from 'sweetalert2';
 
 const Payment = () => {
@@ -86,8 +86,8 @@ const Payment = () => {
   return (
     <div className="flex flex-col h-screen">
       <Header />
-      <div className="bg-[#201F31] flex flex-col md:flex-row items-center gap-3">
-        <div className="bg-[#201F31] min-h-screen flex items-center justify-start basis-1/2 mt-12">
+      <div className="bg-white flex flex-col md:flex-row items-center gap-3">
+        <div className="bg-white min-h-screen flex items-center justify-start basis-1/2 mt-12">
           <Box bg="gray.800" p={8} borderRadius="md" boxShadow="lg" maxW="lg" width="100%">
             <Text fontSize="2xl" color="white" mb={6} textAlign="center">
               Your Checkout Details
@@ -102,7 +102,7 @@ const Payment = () => {
             </div>
           </Box>
         </div>
-        <div className="bg-[#201F31] min-h-screen flex items-center justify-start basis-1/2 mt-12">
+        <div className="bg-white min-h-screen flex items-center justify-start basis-1/2 mt-12">
           <Box bg="gray.800" p={8} borderRadius="md" boxShadow="lg" maxW="lg" width="100%">
             <Text fontSize="2xl" color="white" mb={6} textAlign="center">
               Payment Options

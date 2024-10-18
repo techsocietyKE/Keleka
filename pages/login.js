@@ -40,12 +40,10 @@ const Register = () => {
         text: "Welcome back!",
         timer:2000
       }).then(() => {
-        // Redirect to profile page after success alert
-        router.replace("/");
+        router.replace("/cart");
       });
     } catch (error) {
       console.error(error);
-      // Show SweetAlert for general errors
       Swal.fire({
         icon: "error",
         title: "Login Error",
@@ -79,7 +77,7 @@ const Register = () => {
           </div>
           <button
             type="submit"
-            className="bg-[#201F31] text-white py-2 rounded-md font-medium hover:bg-indigo-800 transition duration-300"
+            className="bg-white text-white py-2 rounded-md font-medium hover:bg-indigo-800 transition duration-300"
           >
             Login
           </button>
