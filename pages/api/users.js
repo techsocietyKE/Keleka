@@ -18,7 +18,7 @@ export default async function handle(req,res){
 
 
     if (method === 'POST') {
-        const { firstname, lastname, email, role,phonenumber,idnumber, password } = req.body;
+        const { fullname, email, role,phoneNumber,idnumber, password } = req.body;
     
         // Check if a user with the provided email already exists
         const existingUser = await User.findOne({ email });
@@ -29,9 +29,8 @@ export default async function handle(req,res){
         
         const hashedPassword = await bcrypt.hash(password, 10);
         const userDoc = await User.create({
-            firstname,
-            lastname,
-            phonenumber,
+            fullname,
+            phoneNumber,
             email,
             role,
             idnumber,
@@ -43,8 +42,8 @@ export default async function handle(req,res){
     
 
     if (method === "PUT"){
-        const {firstname,lastname,email,role,phonenumber,password: hashedPassword,idnumber,_id} = req.body;
-        await User.updateOne({_id},{firstname,lastname,role,phonenumber,email,password: hashedPassword,idnumber})
+        const {fullname,email,role,phoneNumber,password: hashedPassword,idnumber,_id} = req.body;
+        await User.updateOne({_id},{fullname,role,phoneNumber,email,password: hashedPassword,idnumber})
         res.json(true)
     }
     if (method === 'DELETE'){

@@ -141,14 +141,13 @@ export default function Register() {
             <option value="">Choose a Role</option>
             <option value="Admin">Admin</option>
             <option value="Staff">Staff</option>
-            <option value="DeliveryGuy">Delivery Guy</option>
             <option value="Customer">Customer</option>
           </select>
         </div>
         
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-md"
+          className="w-full bg-primary text-white py-2 rounded-md"
         >
           Register
         </button>

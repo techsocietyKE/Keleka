@@ -92,7 +92,7 @@ export default function MealForm({
 
       <label className="block text-gray-700 mb-2">Meal Name</label>
       <input
-        className="w-full border border-gray-300 rounded-lg p-2 mb-4 outline-none focus:border-blue-500"
+        className="w-full border border-gray-300 rounded-lg p-2 mb-4 outline-none "
         type="text"
         placeholder="Meal name"
         value={name}
@@ -101,7 +101,7 @@ export default function MealForm({
 
       <label className="block text-gray-700 mb-2">Description</label>
       <textarea
-        className="w-full border border-gray-300 rounded-lg p-2 mb-4 outline-none focus:border-blue-500"
+        className="w-full border border-gray-300 rounded-lg p-2 mb-4 outline-none "
         placeholder="Description"
         value={description}
         onChange={(ev) => setDescription(ev.target.value)}
@@ -130,7 +130,7 @@ export default function MealForm({
       {/* Price Input Section */}
       <label className="block text-gray-700 mb-2">Add Prices (in Ksh)</label>
       <input
-        className="w-full border border-gray-300 rounded-lg p-2 mb-2 outline-none focus:border-blue-500"
+        className="w-full border border-gray-300 rounded-lg p-2 mb-2 outline-none"
         type="number"
         placeholder="Add price"
         value={priceInput}
@@ -139,7 +139,7 @@ export default function MealForm({
       <button
         type="button"
         onClick={addPrice}
-        className="bg-green-600 text-white rounded-lg py-2 px-4 mb-4"
+        className="bg-green-600 text-white rounded-lg py-1 px-4 mb-4"
       >
         Add Price
       </button>
@@ -199,7 +199,7 @@ export default function MealForm({
 
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white rounded-lg py-2 mt-4 hover:bg-blue-700 transition"
+        className="w-full bg-primary text-white rounded-lg py-2 mt-4  transition"
       >
         Save
       </button>

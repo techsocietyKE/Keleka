@@ -1,11 +1,12 @@
 import { SessionProvider, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import '@/styles/globals.css';
+import { ChakraProvider } from '@chakra-ui/react';
 
 export default function App({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
-      {/* Protect the app */}
+      <ChakraProvider>
       {Component.auth ? (
         <AuthGuard>
           <Component {...pageProps} />
@@ -13,7 +14,9 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
       ) : (
         <Component {...pageProps} />
       )}
+       </ChakraProvider>
     </SessionProvider>
+   
   );
 }
 

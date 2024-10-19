@@ -22,22 +22,26 @@ export default function Login() {
       });
 
       if (res.error) {
-        // Show SweetAlert for invalid credentials
+       
         Swal.fire({
           icon: "error",
-          title: "Invalid Credentials",
-          text: "Please check your email and password and try again.",
-          timer: 2000
+          text: "Invalid Credentials,Please check your email and password and try again.",
+          timer: 2000,
+          showConfirmButton:false,
+          toast:true,
+          position:'top'
         });
         return;
       }
 
-      // Show SweetAlert for successful login
+ 
       Swal.fire({
         icon: "success",
-        title: "Login Successful",
         text: "Welcome back!",
-        timer: 2000
+        timer: 2000,
+        showConfirmButton:false,
+          toast:true,
+          position:'top'
       }).then(() => {
         // Redirect to profile page after success alert
         router.replace('/');
@@ -47,9 +51,11 @@ export default function Login() {
       // Show SweetAlert for general errors
       Swal.fire({
         icon: "error",
-        title: "Login Error",
         text: "An error occurred during login. Please try again.",
-        timer: 2000
+        timer: 2000,
+        showConfirmButton:false,
+          toast:true,
+          position:'top'
       });
     }
   };
@@ -59,7 +65,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
+        className=" p-8 rounded-lg shadow-lg w-full max-w-md"
       >
         <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
           Admin Login
@@ -68,7 +74,7 @@ export default function Login() {
           <label className="block text-gray-600 mb-2">Email</label>
           <input
             type="email"
-            className="w-full px-4 py-2 border rounded-md text-gray-800"
+            className="w-full px-4 py-2 border rounded-md text-gray-800 border-gray-300 outline-none bg-gray-300"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -79,7 +85,7 @@ export default function Login() {
           <label className="block text-gray-600 mb-2">Password</label>
           <input
             type="password"
-            className="w-full px-4 py-2 border rounded-md text-gray-800"
+            className="w-full px-4 py-2 border rounded-md text-gray-800 border-gray-300 outline-none bg-gray-300"
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -88,7 +94,7 @@ export default function Login() {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-md"
+          className="w-full bg-primary text-white py-2 rounded-md"
         >
           Login
         </button>

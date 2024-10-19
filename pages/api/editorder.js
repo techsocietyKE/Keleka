@@ -19,22 +19,19 @@ export default async function handle(req,res){
 
 
     if(method === 'POST'){
-        const {name,email,phonenumber,county,street,DeliveryStatus,
-            city,paymentMethod,Mpesa,paid,Delivered,Confirmed} = req.body;
+        const {
+            paid,Confirmed} = req.body;
         const orderDoc =  await Order.create({
-            name,email,phonenumber,county,street,city,paymentMethod,
-            Mpesa,paid,Delivered,Confirmed,DeliveryStatus
+            paid,Confirmed
         })
         res.json(orderDoc)
     }
 
     if (method === "PUT"){
-        const {name,email,phonenumber,county,street,city,paymentMethod
-            ,Mpesa,paid,Delivered,Confirmed,DeliveryStatus,_id
+        const {paid,Confirmed,_id
         } = req.body;
         
-        await Order.updateOne({_id},{name,email,phonenumber,county,DeliveryStatus,
-            street,city,paymentMethod,Mpesa,paid,Delivered,Confirmed})
+        await Order.updateOne({_id},{paid,Confirmed})
         res.json(true);
 
 a

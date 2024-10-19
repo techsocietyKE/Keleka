@@ -2,11 +2,10 @@ import mongoose,{Schema, model, models} from "mongoose";
 
 const UserSchema = new Schema ({
   
-   firstname:String,
-   lastname:String,
+   fullname:String,
    email:String,
    password:String,
-   phonenumber:String,
+   phoneNumber:String,
    idnumber:String,
    role:String
 },{

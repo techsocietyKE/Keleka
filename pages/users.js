@@ -20,7 +20,7 @@ const Users = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">users</h1>
-          <Link href={'/users/new'} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <Link href={'/users/new'} className="bg-primary text-white font-bold py-2 px-4 rounded">
             Add New User
           </Link>
         </div>
@@ -28,8 +28,7 @@ const Users = () => {
           <table className="min-w-full leading-normal">
             <thead>
               <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                <th className="py-3 px-6 text-left">Firstname</th>
-                <th className="py-3 px-6 text-left">Lastname</th>
+                <th className="py-3 px-6 text-left">fullname</th>
                 <th className="py-3 px-6 text-left">Email</th>
                 <th className="py-3 px-6 text-left">Contact</th>
                 <th className="py-3 px-6 text-left">idnumber</th>
@@ -42,16 +41,13 @@ const Users = () => {
                 users.map((user) => (
                   <tr key={user._id} className="border-b border-gray-200 hover:bg-gray-100">
                     <td className="py-3 px-6 text-left whitespace-nowrap">
-                      <span className="font-medium">{user.firstname}</span>
-                    </td>
-                    <td className="py-3 px-6 text-left">
-                      {user.lastname}
+                      <span className="font-medium">{user.fullname}</span>
                     </td>
                     <td className="py-3 px-6 text-left">
                       {user.email}
                     </td>
                     <td className="py-3 px-6 text-left">
-                      {user.phonenumber}
+                      {user.phoneNumber}
                     </td>
                     <td className="py-3 px-6 text-left">
                       {user.idnumber}
@@ -61,7 +57,7 @@ const Users = () => {
                     </td>
                     <td className="py-3 px-6 text-center">
                       <div className="flex item-center justify-center gap-3">
-                        <Link href={'/users/edit/' + user._id} className="text-blue-600 hover:text-blue-800">
+                        <Link href={'/users/edit/' + user._id} className="text-primary">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"

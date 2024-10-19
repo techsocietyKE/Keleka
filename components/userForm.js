@@ -5,20 +5,18 @@ import { useRouter } from 'next/router';
 export default function UserForm({
     _id,
     email: existingEmail,
-    firstname: existingFirstname,
-    lastname: existingLastname,
+    fullname: existingFullName,
     password: existingPassword,
     role: existingRole,  // role passed as a prop
     idnumber: existingIdNumber,
-    phonenumber:  existingPhoneNumber,
+    phoneNumber:  existingPhoneNumber,
 
 }) {
   const [email, setEmail] = useState(existingEmail || '');
-  const [firstname, setFirstname] = useState(existingFirstname || '');
-  const [lastname, setLastname] = useState(existingLastname || '');
+  const [fullname, setFullName] = useState(existingFullName || '');
   const [password, setPassword] = useState(existingPassword || '');
   const [idnumber, setIdnumber] = useState(existingIdNumber || '');
-  const [phonenumber, setPhonenumber] = useState(existingPhoneNumber || '');
+  const [phoneNumber, setPhonenumber] = useState(existingPhoneNumber || '');
   const [role, setRole] = useState(existingRole || ''); 
   const [message, setMessage] = useState('');
   const router = useRouter();
@@ -27,11 +25,10 @@ export default function UserForm({
     e.preventDefault();
     const data = { 
         email, 
-        firstname,
-        lastname, 
+        fullname,
         password, 
         idnumber,
-        phonenumber,
+        phoneNumber,
         role,
     };
     try {
@@ -63,25 +60,14 @@ export default function UserForm({
             <input
               type="text"
               className="w-full px-4 py-2 border rounded-md text-gray-800"
-              placeholder="Enter your firstname"
-              value={firstname}
-              onChange={(e) => setFirstname(e.target.value)}
-            
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-2">Lastname</label>
-            <input
-              type="text"
-              className="w-full px-4 py-2 border rounded-md text-gray-800"
-              placeholder="Enter your lastname"
-              value={lastname}
-              onChange={(e) => setLastname(e.target.value)}
+              placeholder="Enter fullname"
+              value={fullname}
+              onChange={(e) => setFullName(e.target.value)}
             
             />
           </div>
         </div>
-        <div className='flex flex-row'>
+        <div className='flex gap-2 flex-row'>
           <div className="mb-4">
             <label className="block text-gray-600 mb-2">ID Number</label>
             <input
@@ -99,7 +85,7 @@ export default function UserForm({
               type="text"
               className="w-full px-4 py-2 border rounded-md text-gray-800"
               placeholder="Enter contact"
-              value={phonenumber}
+              value={phoneNumber}
               onChange={(e) => setPhonenumber(e.target.value)}
             
             />
@@ -138,14 +124,13 @@ export default function UserForm({
             <option value="">Select a Role</option>
             <option value="Admin">Admin</option>
             <option value="Staff">Staff</option>
-            <option value="DeliveryGuy">Delivery Guy</option>
             <option value="Customer">Customer</option>
           </select>
         </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded-md"
+          className="w-full bg-primary text-white py-2 rounded-md"
         >
           { _id ? 'Update' : 'Register' }
         </button>

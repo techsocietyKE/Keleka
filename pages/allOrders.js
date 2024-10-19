@@ -5,8 +5,8 @@ import Link from "next/link";
 
 const AllOrders = () => {
     const [orders, setOrders] = useState([]);
-    const [activeTab, setActiveTab] = useState("Orders"); // Manage active tab
-    const [showOrderIds, setShowOrderIds] = useState({}); // Track visibility of order IDs
+    const [activeTab, setActiveTab] = useState("Orders");
+    const [showOrderIds, setShowOrderIds] = useState({});
 
     useEffect(() => {
         if (activeTab === "Orders") {
@@ -19,7 +19,7 @@ const AllOrders = () => {
     const toggleOrderIdVisibility = (orderId) => {
         setShowOrderIds((prev) => ({
             ...prev,
-            [orderId]: !prev[orderId], // Toggle visibility for the clicked order
+            [orderId]: !prev[orderId],
         }));
     };
 
@@ -35,7 +35,6 @@ const AllOrders = () => {
                         <th className="py-3 px-6 text-left">Price</th>
                         <th className="py-3 px-6 text-left">Payment Status</th>
                         <th className="py-3 px-6 text-left">Payment Method</th>
-                        <th className="py-3 px-6 text-left">Delivery Status</th>
                         <th className="py-3 px-6 text-left">Confirm</th>
                         <th className="py-3 px-6 text-left">Action</th>
                     </tr>
@@ -54,7 +53,7 @@ const AllOrders = () => {
                                     >
                                         {showOrderIds[order._id]
                                             ? order._id
-                                            : "Click to view "}
+                                            : "Click to view"}
                                     </button>
                                 </td>
                                 <td className="py-3 px-6 text-left whitespace-nowrap">
@@ -62,24 +61,24 @@ const AllOrders = () => {
                                 </td>
                                 <td className="py-3 px-6 text-left">
                                     <div className="text-sm">
-                                        <p className="font-semibold">{order.name}</p>
-                                        <p>{order.email}</p>
-                                        <p>{order.phonenumber}</p>
-                                        <p>{order.county}, {order.street}</p>
+                                        <p className="font-semibold">{order.fullname}</p>
+                                        {/* <p>{order.email}</p> */}
+                                        <p>{order.phoneNumber}</p>
+                                       
                                     </div>
                                 </td>
                                 <td className="py-3 px-6 text-left">
-                                    {order.book_items && order.book_items.length > 0 ? (
-                                        order.book_items.map((item, index) => (
+                                    {order.product_items && order.product_items.length > 0 ? (
+                                        order.product_items.map((item, index) => (
                                             <div key={index}>
-                                                {item.price_data.book_data.name} x {item.quantity}
+                                                {item.price_data.product_data.name} @ {item.price_data.unit_amount}
                                             </div>
                                         ))
                                     ) : (
                                         <p>No items</p>
                                     )}
                                 </td>
-                                <td className="py-3 px-6 text-left">{order.amount}</td>
+                                <td className="py-3 px-6 text-left">{order.grandTotal} /= </td>
                                 <td className="py-3 px-6 text-left">
                                     <span
                                         className={`inline-block px-3 py-1 font-semibold text-sm rounded-full ${order.paid
@@ -89,23 +88,14 @@ const AllOrders = () => {
                                     >
                                         {order.paid ? "Paid" : "Not Paid"}
                                     </span>
-                                    {order.Mpesa && (
+                                    {order.paymentMethod === "mpesa" && (
                                         <span className="ml-2 text-green-500">(Paid with Mpesa)</span>
                                     )}
                                 </td>
-                                <td className="py-3 px-6 text-left">{order.paymentMethod}</td>
                                 <td className="py-3 px-6 text-left">
-    <span
-        className={`inline-block px-3 py-1 font-semibold text-sm rounded-full 
-            ${order.DeliveryStatus === "Delivered" ? "bg-green-100 text-green-600" : ""}
-            ${order.DeliveryStatus === "Pending" ? "bg-red-100 text-red-600" : ""}
-            ${order.DeliveryStatus === "Cancelled" ? "bg-orange-100 text-orange-600" : ""}
-        `}
-    >
-        {order.DeliveryStatus}
-    </span>
-</td>
-
+                                    {order.paymentMethod === "cash" ? "Cash" : "Mpesa"}
+                                </td>
+                               
                                 <td className="py-3 px-6 text-left">
                                     <span
                                         className={`inline-block px-3 py-1 font-semibold text-sm rounded-full ${order.Confirmed
@@ -154,8 +144,8 @@ const AllOrders = () => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="7" className="text-center py-5">
-                                No orders found
+                            <td colSpan="12" className="py-3 px-6 text-left whitespace-nowrap">
+                                No orders available
                             </td>
                         </tr>
                     )}
