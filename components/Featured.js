@@ -49,7 +49,7 @@ export default function Featured() {
       {meals.length > 0 ? (
         <Slider {...settings}>
           {meals.slice(0, 4).map((meal) => (
-            <div key={meal._id} className="p-6">
+            <div key={meal._id} className="md:p-8 p-2 py-3">
               <div className="flex flex-col md:flex-row justify-center items-center">
                 <div className="md:w-1/2 px-8 py-12 text-center md:text-left">
                   <h1 className="text-4xl font-bold mb-4 text-gray-700">{meal.name}</h1>

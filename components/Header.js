@@ -105,6 +105,7 @@ export default function Header() {
             
             <nav className='flex flex-col gap-4 text-lg'>
             <Link className="text-gray-200 text-lg hover:text-primary" href="/">Home</Link>
+            <Link className="text-gray-200 text-lg hover:text-primary" href="/menu">Menu</Link>
               {!session && (
                 <>
                  <Link className="text-gray-200 text-lg hover:text-primary" onClick={toggleSidebar} href="/login">Sign In</Link>
