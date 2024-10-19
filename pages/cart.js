@@ -270,7 +270,7 @@ const CartPage = () => {
             ) : (
               <Link href="/login">
                 <Button colorScheme="orange" size="lg" width="full" mt={4}>
-                  Please login to checkout
+                  Please sign in to checkout
                 </Button>
               </Link>
             )}

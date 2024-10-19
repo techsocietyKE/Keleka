@@ -72,7 +72,7 @@ export default function Header() {
           ):(
             <>
             <Link className="text-gray-700 text-lg hover:text-primary" href="/login">Sign In</Link>
-            <Link className="text-gray-700 text-lg hover:text-primary" href="/register">Register</Link>
+           
             </>
           )
         }
@@ -109,7 +109,6 @@ export default function Header() {
               {!session && (
                 <>
                  <Link className="text-gray-200 text-lg hover:text-primary" onClick={toggleSidebar} href="/login">Sign In</Link>
-                 <Link className="text-gray-200 text-lg hover:text-primary" onClick={toggleSidebar} href="/register">Register</Link>
                 </>
               )}
               {session && (
