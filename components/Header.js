@@ -25,7 +25,7 @@ export default function Header() {
        <div className="fixed top-0 left-0 w-full bg-white p-4 px-4 flex items-center justify-between z-50 shadow-sm">
       <div>
         <Link href="/">
-          <h1 className="text-gray-900 md:text-2xl text-xl font-bold tracking-widest">
+          <h1 className="text-primary md:text-3xl text-xl font-extrabold tracking-widest">
             Tuk Cafeteria
           </h1>
         </Link>

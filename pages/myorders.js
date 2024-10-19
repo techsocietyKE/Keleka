@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
-import moment from 'moment'; // To format the order date
+import moment from 'moment';
 
 const MyOrders = () => {
   const { data: session, status } = useSession();
@@ -47,7 +47,7 @@ const MyOrders = () => {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+      <div className="flex justify-center items-center min-h-screen bg-gray-100">
         <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
           <span className="hidden">Loading...</span>
         </div>
@@ -60,70 +60,74 @@ const MyOrders = () => {
     );
 
   return (
-    <div className="bg-white md:p-4 p-2">
+    <div className="bg-white min-h-screen md:p-8 p-4">
       {personalInfo ? (
-        <div>
-          <h1 className="text-gray-100 pt-12">Personal Information</h1>
-          <div className="flex flex-wrap gap-2 bg-[#262638] md:p-5 p-3 shadow-lg rounded-md">
-            <div>
-              <h1 className="text-gray-200 text-md">Full Name</h1>
-              <h1 className="text-gray-400 text-sm">{personalInfo.fullname || 'N/A'}</h1>
+        <div className="mb-8">
+          <h1 className="text-2xl font-semibold text-gray-800 mb-4">Personal Information</h1>
+          <div className="flex flex-wrap gap-4 bg-gray-100 p-6 shadow-lg rounded-md">
+            <div className="w-full md:w-1/3">
+              <h2 className="text-gray-600 text-lg">Full Name</h2>
+              <p className="text-gray-800 text-md">{personalInfo.fullname || 'N/A'}</p>
             </div>
-            <div className="border-l border-gray-500 mx-1 px-4">
-              <h1 className="text-gray-200 text-md">Contact</h1>
-              <h1 className="text-gray-400 text-sm">{personalInfo.phoneNumber || "N/A"}</h1>
+            <div className="w-full md:w-1/3">
+              <h2 className="text-gray-600 text-lg">Contact</h2>
+              <p className="text-gray-800 text-md">{personalInfo.phoneNumber || "N/A"}</p>
             </div>
-            <div className="border-l border-gray-500 mx-1 px-4">
-              <h1 className="text-gray-200 text-md">Email</h1>
-              <h1 className="text-gray-400 text-sm">{personalInfo.email}</h1>
+            <div className="w-full md:w-1/3">
+              <h2 className="text-gray-600 text-lg">Email</h2>
+              <p className="text-gray-800 text-md">{personalInfo.email}</p>
             </div>
           </div>
         </div>
       ) : (
-        <div className="text-center text-gray-700">
+        <div className="text-center text-gray-700 mb-8">
           <p>No personal information found.</p>
         </div>
       )}
 
-      <div className="text-gray-100 mt-5">
-        <h1>Your Order History</h1>
+      <div>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Your Order History</h2>
         {orders.length > 0 ? (
           orders.map((order, index) => (
-            <div key={index} className="bg-[#262638] p-5 shadow-lg rounded-md my-4">
-              <p className="underline">
-                Order : {index + 1} - <span className="text-gray-400">{moment(order.createdAt).format('LLL')}</span>
+            <div key={index} className="bg-gray-50 p-6 shadow-lg rounded-md my-6">
+              <p className="underline font-semibold text-lg text-gray-700">
+                Order {index + 1} - <span className="text-gray-500">{moment(order.createdAt).format('LLL')}</span>
               </p>
               
-              <ul className="list-disc list-inside text-gray-200">
-  {order.product_items && order.product_items.length > 0 ? (
-    order.product_items.map((item, idx) => (
-      <li key={idx} className="ml-2 my-2">
-        {item.price_data.product_data?.name} x {item.quantity}
-      </li>
-    ))
-  ) : (
-    <li className="ml-2 my-2">No items found in this order.</li>
-  )}
-</ul>
+              <ul className="list-disc list-inside text-gray-600 mt-4">
+                {order.product_items && order.product_items.length > 0 ? (
+                  order.product_items.map((item, idx) => (
+                    <li key={idx} className="my-2">
+                      {item.price_data.product_data?.name} 
+                    </li>
+                  ))
+                ) : (
+                  <li className="my-2">No items found in this order.</li>
+                )}
+              </ul>
 
+              <div className="mt-4">
+                <p className="text-green-500 font-semibold">Amount: Ksh {order.grandTotal}</p>
+              </div>
 
-              <h1 className="text-green-400 ml-5 font-semibold">Amount: Ksh {order.grandTotal}</h1>
-
-              <p className={`ml-5 my-2 p-2 rounded-md w-32 text-center ${order.paid ? 'bg-green-500' : 'bg-red-500'} text-white`}>
-                Paid: {order.paid ? 'Yes' : 'No'}
-              </p>
+              <div className="mt-2">
+                <p className={`inline-block my-2 p-2 rounded-md w-36 text-center ${order.paid ? 'bg-green-500' : 'bg-red-500'} text-white`}>
+                  <p>Paid: {order.paid ? 'Yes' : 'No'}</p>
+                  <p>By: {order.paymentMethod === 'mpesa' ? 'Paid with Mpesa' : 'COD'}</p>
+                </p>
+              </div>
 
               {order.paymentMethod === 'cod' && (
-                <p className={`ml-5 my-2 p-2 rounded-md w-32 text-start ${
-                  order.Confirmed ? 'bg-green-500' : 'bg-red-500'
-                } text-white`}>
-                  Order Confirmed: {order.Confirmed ? 'Yes' : 'No'}
-                </p>
+                <div className="mt-2 w-auto">
+                  <p className={`inline-block p-2 rounded-md w-36 text-center ${order.Confirmed ? 'bg-green-500' : 'bg-red-500'} text-white`}>
+                    Order Confirmed: {order.Confirmed ? 'Yes' : 'No'}
+                  </p>
+                </div>
               )}
             </div>
           ))
         ) : (
-          <p>No orders found.</p>
+          <p className="text-center text-gray-700">No orders found.</p>
         )}
       </div>
     </div>

@@ -7,7 +7,7 @@ const MealSchema = new Schema({
   image: { type: String },
   basePrice: { type: String },
   category: { type: [String], required: true },
-  purchaseCount: { type: Number, default: 0 }
+  timesOrdered: { type: Number, default: 0 }, // Add this field
 }, {
   timestamps: true,
 });

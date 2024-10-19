@@ -12,7 +12,6 @@ export default function HomePage({ featuredmeal, newMeals }) {
     <div className="bg-white">
       <Header />
       <Featured meal={featuredmeal} />
-
       <Divider />
       <PopularMenu/>
     </div>

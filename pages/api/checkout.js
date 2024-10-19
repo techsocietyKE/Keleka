@@ -11,7 +11,6 @@ export default async function handle(req, res) {
     const {
       fullname, email, phoneNumber, grandTotal, paid, Mpesa, paymentMethod, cartProducts, userId
     } = req.body;
-  
     await mongooseConnect();
   
     const uniqueIds = [...new Set(cartProducts.map(item => item._id))];
@@ -33,10 +32,8 @@ export default async function handle(req, res) {
           }
         });
   
-       
-        await Meal.findByIdAndUpdate(product._id, {
-          $inc: { purchaseCount: product.quantity } 
-        });
+        await Meal.updateOne({ _id: product._id }, { $inc: { timesOrdered: 1 } });
+      
       }
     }
   
