@@ -86,7 +86,7 @@ const CartPage = () => {
           });
         }
   
-      } else if (paymentMethod === 'cod') {
+      } else if (paymentMethod === 'cash') {
       t
         Swal.fire({
           title: 'Processing...',
@@ -110,7 +110,7 @@ const CartPage = () => {
           
         });
         
-        console.log('COD Order processed successfully.');
+        console.log('cash Order processed successfully.');
       }
   
       setTimeout(() => {
@@ -139,7 +139,7 @@ const CartPage = () => {
     }
   };
   
-  const handleCODPayment = async () => {
+  const handleCashPayment = async () => {
     setLoading(true);
   
     try {
@@ -160,7 +160,7 @@ const CartPage = () => {
        await saveOrder({
         grandTotal,
         cartProducts,
-        paymentMethod: 'cod',
+        paymentMethod: 'cash',
         paid: false,  
         Mpesa: false,  
         userId: session?.user?.id,
@@ -169,7 +169,7 @@ const CartPage = () => {
         phoneNumber: session?.user?.phoneNumber,
       });
       
-      console.log('COD Order processed successfully.');
+      console.log('cash Order processed successfully.');
       Swal.fire({
         icon: 'success',
         title: 'Order Placed',
@@ -183,7 +183,7 @@ const CartPage = () => {
       router.push('/profile');
   
     } catch (error) {
-      console.error('Error during COD order processing:', error);
+      console.error('Error during cash order processing:', error);
   
       Swal.fire({
         icon: 'error',
@@ -240,13 +240,13 @@ const CartPage = () => {
                   {product.selectedPrices ? (
                     <Flex>
                       {product.selectedPrices.map((price, index) => (
-                        <Text key={index} color="gray.600">
-                          <strong>{index + 1}</strong>: Ksh {price}
+                        <Text key={index} color="gray.600 " className='px-1'>
+                          <strong>{index + 1} </strong>   : Ksh {price}
                         </Text>
                       ))}
                     </Flex>
                   ) : (
-                    <Text>Ksh {product.basePrice}</Text>
+                    <></>
                   )}
                   <Flex justify="space-between" align="center" mt={2}>
                     <Text fontSize="xl" fontWeight="bold">Total: Ksh {calculateTotal(product)}</Text>
@@ -291,7 +291,7 @@ const CartPage = () => {
               <RadioGroup onChange={setPaymentMethod} value={paymentMethod}>
                 <Stack spacing={4} direction='row'>
                   <Radio value="mpesa" colorScheme="orange">M-Pesa</Radio>
-                  <Radio value="cod" colorScheme="orange">Pay Cash</Radio>
+                  <Radio value="cash" colorScheme="orange">Pay Cash</Radio>
                 </Stack>
               </RadioGroup>
 
@@ -302,10 +302,10 @@ const CartPage = () => {
                 </form>
               )}
 
-              {paymentMethod === 'cod' && (
+              {paymentMethod === 'cash' && (
                 <Box mt={4}>
                   <Text fontSize="lg">Pay Ksh {grandTotal} on delivery.</Text>
-                  <Button colorScheme="orange" width="full" mt={4} onClick={handleCODPayment} isLoading={loading}>Place Order</Button>
+                  <Button colorScheme="orange" width="full" mt={4} onClick={handleCashPayment} isLoading={loading}>Place Order</Button>
                 </Box>
               )}
             </Box>

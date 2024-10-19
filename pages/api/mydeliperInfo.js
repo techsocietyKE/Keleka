@@ -129,7 +129,7 @@ const PersonalDeliveryInfo = () => {
                 Paid: {order.paid ? 'Yes' : 'No'}
               </p>
 
-              {order.paymentMethod === 'cod' && (
+              {order.paymentMethod === 'cash' && (
                 <p className={`ml-5 my-2 p-2 rounded-md w-32 text-start ${
                   order.DeliveryStatus === 'Delivered'
                     ? 'bg-green-500'

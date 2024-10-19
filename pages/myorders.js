@@ -113,11 +113,11 @@ const MyOrders = () => {
               <div className="mt-2">
                 <p className={`inline-block my-2 p-2 rounded-md w-36 text-center ${order.paid ? 'bg-green-500' : 'bg-red-500'} text-white`}>
                   <p>Paid: {order.paid ? 'Yes' : 'No'}</p>
-                  <p>By: {order.paymentMethod === 'mpesa' ? 'Paid with Mpesa' : 'COD'}</p>
+                  <p>By: {order.paymentMethod === 'mpesa' ? 'Paid with Mpesa' : 'Cash'}</p>
                 </p>
               </div>
 
-              {order.paymentMethod === 'cod' && (
+              {order.paymentMethod === 'cash' && (
                 <div className="mt-2 w-auto">
                   <p className={`inline-block p-2 rounded-md w-36 text-center ${order.Confirmed ? 'bg-green-500' : 'bg-red-500'} text-white`}>
                     Order Confirmed: {order.Confirmed ? 'Yes' : 'No'}
