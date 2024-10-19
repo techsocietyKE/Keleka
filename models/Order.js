@@ -1,14 +1,11 @@
 import mongoose, { Schema, model, models } from "mongoose";
 
 const OrderSchema = new Schema({
-  book_items: Object,
-  name: String,
+  product_items: Object,
+  fullname: String,
   email: String,
-  phonenumber: String,
-  county: String,
-  city: String,
-  street: String,
-  amount: String,
+  phoneNumber: String,
+  grandTotal: String,
   userId: String,
   paid: {
     type: Boolean,
@@ -21,10 +18,6 @@ const OrderSchema = new Schema({
   Confirmed: {
     type: Boolean,
     default: false,
-  },
-  DeliveryStatus: {
-    type: String,        
-    default: "Pending",   
   },
   paymentMethod: String,
 }, {

@@ -1,92 +1,65 @@
 import { mongooseConnect } from "@/lib/mongoose";
-import { Book } from "@/models/Book";
+import { Meal } from "@/models/Meal";
 import { Order } from "@/models/Order";
-import { AdminOrderNotificationEmailTemplate, ClientPendingOrderEmailTemplate, gmailTransport } from "@/utils/mails";
 
 export default async function handle(req, res) {
     if (req.method !== 'POST') {
-        res.status(405).json({ error: 'Only POST requests are allowed' });
-        return;
+      res.status(405).json({ error: 'Only POST requests are allowed' });
+      return;
     }
-
+  
     const {
-        name, email, phoneNumber, county, city,
-        street,total, paid, Mpesa,paymentMethod, cartBooks,
-        userId
+      fullname, email, phoneNumber, grandTotal, paid, Mpesa, paymentMethod, cartProducts, userId
     } = req.body;
-
-    // Connect to the database
+  
     await mongooseConnect();
-
-    const booksIds = cartBooks;
-    const uniqueIds = [...new Set(booksIds)];
-    const booksInfo = await Book.find({ _id: uniqueIds });
-
-    let book_items = [];
+  
+    const uniqueIds = [...new Set(cartProducts.map(item => item._id))];
+    const productsInfo = await Meal.find({ _id: uniqueIds });
+  
+    let product_items = [];
     let totalAmount = 0;
-    
-    for (const bookId of uniqueIds) {
-        const bookInfo = booksInfo.find(p => p._id.toString() === bookId);
-        const quantity = booksIds.filter(id => id === bookId)?.length || 0;
-        if (quantity > 0 && bookInfo) {
-            const itemPrice = bookInfo.price * quantity;
-            totalAmount += itemPrice;
-
-            book_items.push({
-                quantity,
-                price_data: {
-                    book_data: { name: bookInfo.title },
-                    unit_amount: bookInfo.price * 100,
-                }
-            });
-        }
+  
+    for (const product of cartProducts) {
+      const productInfo = productsInfo.find(p => p._id.toString() === product._id);
+      if (productInfo) {
+        const itemPrice = calculateTotal(product);
+        totalAmount += itemPrice;
+        product_items.push({
+          quantity: product.quantity,
+          price_data: {
+            product_data: { name: productInfo.name },
+            unit_amount: itemPrice,
+          }
+        });
+  
+       
+        await Meal.findByIdAndUpdate(product._id, {
+          $inc: { purchaseCount: product.quantity } 
+        });
+      }
     }
-
-    // Create the order document in MongoDB
-    const order = await Order.create({
-        book_items,
-        name,
-        phonenumber: phoneNumber,
-        county,
-        city,
-        street,
-        amount: total,
-        paid,
-        Mpesa,
-        email,
-        paymentMethod,
-        userId,
-
-    });
-
+  
    
-    gmailTransport().sendMail({
-        from: email,
-        to: process.env.GMAIL_USER_NAME, 
-        subject: 'New Pending Order',
-        html: AdminOrderNotificationEmailTemplate(book_items),
-    }, (error, info) => {
-        if (error) {
-            console.error('Error sending email to admin:', error);
-        } else {
-            console.log('Admin email sent:', info.response);
-        }
+    const order = await Order.create({
+      product_items,
+      fullname,
+      phoneNumber,
+      grandTotal,
+      paid,
+      Mpesa,
+      email,
+      paymentMethod,
+      userId,
     });
+  
+    res.status(200).json({ success: true, order });
+  }
+  
 
-    
-    gmailTransport().sendMail({
-        from: process.env.GMAIL_USER_NAME,
-        to: email,  
-        subject: 'Pending Order Confirmation',
-        html: ClientPendingOrderEmailTemplate(book_items, totalAmount),
-    }, (error, info) => {
-        if (error) {
-            console.error('Error sending email to client:', error);
-        } else {
-            console.log('Client email sent:', info.response);
-        }
-    });
-
-    // Send the created order back with success status
-    res.status(200).json({ success: true, order: order });
+function calculateTotal(product) {
+    if (product.selectedPrices && product.selectedPrices.length > 0) {
+        return product.selectedPrices.reduce((acc, price) => acc + Number(price), 0);
+    }
+    return Number(product.basePrice);
 }

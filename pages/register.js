@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [fullname, setFullName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -35,9 +37,11 @@ const Register = () => {
       if (user) {
         Swal.fire({
           icon: "error",
-          title: "User Exists",
           text: "User already exists.",
-          timer: 2000
+          timer: 2000,
+          showConfirmButton:false,
+          toast:true,
+          position:'top'
         });
         return;
       }
@@ -50,32 +54,40 @@ const Register = () => {
         body: JSON.stringify({
           email,
           password,
+          fullname,
+          phoneNumber
         }),
       });
 
       if (res.ok) {
         Swal.fire({
           icon: "success",
-          title: "Registration Successful",
           text: "You have successfully registered!",
-          timer: 2000
+          timer: 2000,
+          showConfirmButton:false,
+          toast:true,
+          position:'top'
         }).then(() => {
           router.push("/login");
         });
       } else {
         Swal.fire({
           icon: "error",
-          title: "Registration Failed",
           text: "User registration failed.",
-          timer: 2000
+          timer: 2000,
+          showConfirmButton:false,
+          toast:true,
+          position:'top'
         });
       }
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Error",
         text: "An error occurred during registration.",
-        timer: 2000
+        timer: 2000,
+        showConfirmButton:false,
+        toast:true,
+        position:'top'
       });
       console.error("Error during registration: ", error);
     }
@@ -83,13 +95,13 @@ const Register = () => {
 
   return (
     <div className="flex flex-col h-screen justify-center items-center bg-gray-100 p-4">
-      <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+      <div className=" shadow-lg rounded-lg p-8 max-w-md w-full">
         <h1 className="text-2xl font-semibold mb-6 text-center text-gray-800">Create An Account</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-700 mb-1">Enter Email</label>
+            <label className="text-md font-medium text-gray-700 my-2">Enter Email</label>
             <input
-              className="outline-none border border-gray-300 rounded-md px-4 py-2 text-gray-700 focus:ring-2 focus:ring-indigo-500"
+              className="outline-none border border-gray-200 bg-gray-50 py-2 px-3 rounded-lg"
               type="email"
               placeholder="email@gmail.com"
               value={email}
@@ -97,18 +109,38 @@ const Register = () => {
             />
           </div>
           <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-700 mb-1">Enter Password</label>
+            <label className="text-md font-medium text-gray-700 my-2">Enter Password</label>
             <input
-              className="outline-none border border-gray-300 rounded-md px-4 py-2 text-gray-700 focus:ring-2 focus:ring-indigo-500"
+              className="outline-none border border-gray-200 bg-gray-50 py-2 px-3 rounded-lg"
               type="password"
               placeholder="*********"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          <div className="flex flex-col">
+            <label className="text-md font-medium text-gray-700 my-2">Enter fullname</label>
+            <input
+              className="outline-none border border-gray-200 bg-gray-50 py-2 px-3 rounded-lg"
+              type="text"
+              placeholder="Enter your Name"
+              value={fullname}
+              onChange={(e) => setFullName(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-md font-medium text-gray-700 my-2">Phone Number</label>
+            <input
+              className="outline-none border border-gray-200 bg-gray-50 py-2 px-3 rounded-lg"
+              type="number"
+              placeholder="Enter your phonenumber"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+          </div>
           <button
             type="submit"
-            className="bg-white text-white py-2 rounded-md font-medium hover:bg-indigo-800 transition duration-300"
+            className="bg-primary text-white py-2 rounded-md font-medium hover:shadow-md transition duration-300"
           >
             Register
           </button>

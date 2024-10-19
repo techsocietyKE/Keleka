@@ -3,11 +3,12 @@ import { useContext, useState } from "react";
 import { CartContext } from "./AppProvider";
 import { signOut, useSession } from "next-auth/react"; 
 import { useRouter } from "next/navigation";
+import { FaShoppingCart } from "react-icons/fa";
 
 export default function Header() {
   const { cartProducts} = useContext(CartContext);
-  console.log(cartProducts)
   const { data: session } = useSession();
+
   const router = useRouter();
   const handleLogout = async () => {
     await signOut(); 
@@ -29,22 +30,24 @@ export default function Header() {
           </h1>
         </Link>
       </div>
-      <div className="menu md:hidden flex gap-2 text-gray-200">
-    
-
-    
-         
-          <Link className="text-black" href={'/cart'}>Cart ({cartProducts.length})</Link>
-        
+      <div className="menu md:hidden flex gap-2 text-gray-200">    
+        <Link href={'/cart'} className="relative mt-2 mr-2">
+            <FaShoppingCart className="text-gray-600" />
+            {cartProducts?.length > 0 && (
+              <span className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
+            {cartProducts.length}
+          </span>
+            )}
+          </Link>
       
         <button  onClick={toggleSidebar}>
 
           {isOpen?
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6 text-gray-800">
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
           </svg>
             :
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6 text-gray-800">
            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
            </svg>   
           }
@@ -73,7 +76,14 @@ export default function Header() {
             </>
           )
         }
-       <Link className="text-black" href={'/cart'}>Cart ({cartProducts.length})</Link>
+        <Link href={'/cart'} className="relative mt-2 mr-3">
+            <FaShoppingCart className="text-gray-600" />
+            {cartProducts?.length > 0 && (
+              <span className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
+            {cartProducts.length}
+          </span>
+            )}
+          </Link>
       </div>
     </div>
 
@@ -94,18 +104,16 @@ export default function Header() {
 
             
             <nav className='flex flex-col gap-4 text-lg'>
-            <Link className="text-gray-700 text-lg hover:text-primary" href="/">Home</Link>
-            <Link className="text-gray-700 text-lg hover:text-primary" href="/categories">Genres</Link>
-
+            <Link className="text-gray-200 text-lg hover:text-primary" href="/">Home</Link>
               {!session && (
                 <>
-                 <Link className="text-gray-700 text-lg hover:text-primary" onClick={toggleSidebar} href="/login">Sign In</Link>
-                 <Link className="text-gray-700 text-lg hover:text-primary" onClick={toggleSidebar} href="/register">Register</Link>
+                 <Link className="text-gray-200 text-lg hover:text-primary" onClick={toggleSidebar} href="/login">Sign In</Link>
+                 <Link className="text-gray-200 text-lg hover:text-primary" onClick={toggleSidebar} href="/register">Register</Link>
                 </>
               )}
               {session && (
                <>
-                <Link className="text-gray-700 text-lg hover:text-primary" href="/profile">Profile</Link>
+                <Link className="text-gray-200 text-lg hover:text-primary" href="/profile">Profile</Link>
                 <button onClick={() => { handleLogout(); toggleSidebar(); }} className='hover:text-[#EB5255] transition-colors duration-300'>
                   Logout
                 </button>

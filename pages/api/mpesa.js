@@ -32,7 +32,7 @@ export async function POST(req, res) {
       PartyB: process.env.BUSINESS_SHORT_CODE,
       PhoneNumber: phoneNumber,
       CallBackURL: `${process.env.APP_URL}/api/v1/payment/mpesa/stkpush/result/`,
-      AccountReference: 'Keleka Bookshop',
+      AccountReference: 'Tukcafe',
       TransactionDesc: 'Test',
     };
 

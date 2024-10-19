@@ -30,11 +30,8 @@ const MyOrders = () => {
         if (data.orders.length > 0) {
           const firstOrder = data.orders[0];
           setPersonalInfo({
-            name: firstOrder.name,
-            phoneNumber: firstOrder.phonenumber,
-            county: firstOrder.county,
-            city: firstOrder.city,
-            street: firstOrder.street,
+            fullname: firstOrder.fullname,
+            phoneNumber: firstOrder.phoneNumber,
             email: session.user.email,
           });
         }
@@ -69,8 +66,8 @@ const MyOrders = () => {
           <h1 className="text-gray-100 pt-12">Personal Information</h1>
           <div className="flex flex-wrap gap-2 bg-[#262638] md:p-5 p-3 shadow-lg rounded-md">
             <div>
-              <h1 className="text-gray-200 text-md">Name</h1>
-              <h1 className="text-gray-400 text-sm">{personalInfo.name || 'N/A'}</h1>
+              <h1 className="text-gray-200 text-md">Full Name</h1>
+              <h1 className="text-gray-400 text-sm">{personalInfo.fullname || 'N/A'}</h1>
             </div>
             <div className="border-l border-gray-500 mx-1 px-4">
               <h1 className="text-gray-200 text-md">Contact</h1>
@@ -79,22 +76,6 @@ const MyOrders = () => {
             <div className="border-l border-gray-500 mx-1 px-4">
               <h1 className="text-gray-200 text-md">Email</h1>
               <h1 className="text-gray-400 text-sm">{personalInfo.email}</h1>
-            </div>
-          </div>
-
-          <h1 className="text-gray-100 mt-5">Delivery Information</h1>
-          <div className="flex flex-wrap gap-2 bg-[#262638] md:p-5 p-3 shadow-lg rounded-md my-4">
-            <div>
-              <h1 className="text-gray-200 text-md">County</h1>
-              <h1 className="text-gray-400 text-sm">{personalInfo.county}</h1>
-            </div>
-            <div className="border-l border-gray-500 mx-1 px-4">
-              <h1 className="text-gray-200 text-md">City</h1>
-              <h1 className="text-gray-400 text-sm">{personalInfo.city}</h1>
-            </div>
-            <div className="border-l border-gray-500 mx-1 px-4">
-              <h1 className="text-gray-200 text-md">Street</h1>
-              <h1 className="text-gray-400 text-sm">{personalInfo.street}</h1>
             </div>
           </div>
         </div>
@@ -114,14 +95,19 @@ const MyOrders = () => {
               </p>
               
               <ul className="list-disc list-inside text-gray-200">
-                {order.book_items.map((item, idx) => (
-                  <li key={idx} className="ml-2 my-2">
-                    {item.price_data.book_data?.name} x {item.quantity}
-                  </li>
-                ))}
-              </ul>
+  {order.product_items && order.product_items.length > 0 ? (
+    order.product_items.map((item, idx) => (
+      <li key={idx} className="ml-2 my-2">
+        {item.price_data.product_data?.name} x {item.quantity}
+      </li>
+    ))
+  ) : (
+    <li className="ml-2 my-2">No items found in this order.</li>
+  )}
+</ul>
 
-              <h1 className="text-green-400 ml-5 font-semibold">Amount: Ksh {order.amount}</h1>
+
+              <h1 className="text-green-400 ml-5 font-semibold">Amount: Ksh {order.grandTotal}</h1>
 
               <p className={`ml-5 my-2 p-2 rounded-md w-32 text-center ${order.paid ? 'bg-green-500' : 'bg-red-500'} text-white`}>
                 Paid: {order.paid ? 'Yes' : 'No'}
@@ -129,13 +115,9 @@ const MyOrders = () => {
 
               {order.paymentMethod === 'cod' && (
                 <p className={`ml-5 my-2 p-2 rounded-md w-32 text-start ${
-                  order.DeliveryStatus === 'Delivered'
-                    ? 'bg-green-500'
-                    : order.DeliveryStatus === 'Pending'
-                    ? 'bg-yellow-500'
-                    : 'bg-red-500'
+                  order.Confirmed ? 'bg-green-500' : 'bg-red-500'
                 } text-white`}>
-                  Delivery Status: {order.DeliveryStatus || 'Pending'}
+                  Order Confirmed: {order.Confirmed ? 'Yes' : 'No'}
                 </p>
               )}
             </div>

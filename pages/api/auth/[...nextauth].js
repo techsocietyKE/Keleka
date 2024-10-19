@@ -32,11 +32,15 @@ export const authOptions = {
           console.log("User found:", {
             id: user._id.toString(),
             email: user.email,
+            fullname: user.fullname,
+            phoneNumber: user.phoneNumber,
           });
 
           return {
             id: user._id.toString(),
             email: user.email,
+            fullname: user.fullname,
+            phoneNumber: user.phoneNumber,
           };
         } catch (error) {
           console.log("Error in authorize function: ", error);
@@ -53,6 +57,8 @@ export const authOptions = {
       // Add additional user details to the JWT token
       if (user) {
         token.id = user.id;
+        token.fullname = user.fullname; // Add fullname to token
+        token.phoneNumber = user.phoneNumber; // Add phoneNumber to token
       }
       return token;
     },
@@ -60,6 +66,8 @@ export const authOptions = {
       // Add additional user details to the session object
       if (token) {
         session.user.id = token.id;
+        session.user.fullname = token.fullname; // Pass fullname from token to session
+        session.user.phoneNumber = token.phoneNumber; // Pass phoneNumber from token to session
       }
       return session;
     },
@@ -70,5 +78,7 @@ export const authOptions = {
   },
 };
 
-// Correct export as default
 export default NextAuth(authOptions);
+
+
+

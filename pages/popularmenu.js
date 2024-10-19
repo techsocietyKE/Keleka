@@ -7,7 +7,7 @@ export default function PopularMenu() {
   useEffect(() => {
     fetch('/api/menu-items').then(res => {
       res.json().then(menuItems => {
-        setPopular(menuItems.slice(3))
+        setPopular(menuItems.slice(-6))
       })
     })
   }, [])

@@ -10,6 +10,15 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    phoneNumber: {
+      type:String ,
+      required: true,
+    },
+    fullname: {
+      type:String ,
+      required: true,
+    },
+
     role: {
       type: String,
       default: 'Customer',

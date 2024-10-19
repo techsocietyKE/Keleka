@@ -4,9 +4,10 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import React, { useContext, useState } from 'react';
 import { FaTrashAlt } from "react-icons/fa";
-import { Button, Input, Box, Text, RadioGroup, Stack, Radio, useToast } from "@chakra-ui/react";
+import { Button, Input, Box, Text, RadioGroup, Stack, Radio, Flex, useToast, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody } from "@chakra-ui/react";
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const CartPage = () => {
   const { data: session } = useSession();
@@ -15,7 +16,8 @@ const CartPage = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('mpesa');
   const [loading, setLoading] = useState(false);
-  const  router = useRouter();
+  const router = useRouter();
+
   const calculateTotal = (product) => {
     if (product.selectedPrices && product.selectedPrices.length > 0) {
       return product.selectedPrices.reduce((acc, price) => acc + Number(price), 0);
@@ -27,8 +29,7 @@ const CartPage = () => {
     return cartProducts.reduce((acc, product) => acc + calculateTotal(product), 0);
   };
 
-  let  grandTotal = calculateGrandTotal();
-
+  let grandTotal = calculateGrandTotal();
 
   const handleMpesaPayment = async (e) => {
     e.preventDefault();
@@ -61,7 +62,8 @@ const CartPage = () => {
           const result = await response.json();
           await saveOrder({
             grandTotal, cartProducts, paymentMethod, paid: true, Mpesa: true,
-            userId: session?.user?.id, email: session?.user?.email, name:session?.user?.fullname,
+            userId: session?.user?.id, email: session?.user?.email,
+            fullname:session?.user?.fullname,phoneNumber:session?.user?.phoneNumber,
           });
           console.log('Payment Success:', result);
         } else {
@@ -69,7 +71,8 @@ const CartPage = () => {
           console.log('Payment Error:', error);
           await saveOrder({
             grandTotal, cartProducts, paymentMethod, paid: false, Mpesa: false,
-            userId: session?.user?.id, email: session?.user?.email,name:session?.user?.fullname,
+            userId: session?.user?.id, email: session?.user?.email,
+            fullname:session?.user?.fullname,phoneNumber:session?.user?.phoneNumber,
           });
   
           Swal.fire({
@@ -103,7 +106,8 @@ const CartPage = () => {
         await saveOrder({
           grandTotal, cartProducts, paymentMethod, paid: false, Mpesa: false,
           userId: session?.user?.id, email: session?.user?.email,
-          name:session?.user?.fullname,
+          fullname:session?.user?.fullname,phoneNumber:session?.user?.phoneNumber,
+          
         });
         
         console.log('COD Order processed successfully.');
@@ -111,14 +115,15 @@ const CartPage = () => {
   
       setTimeout(() => {
         router.push('/profile');
-      }, paymentMethod === 'mpesa' ? 15000 : 10000);  // Adjust redirect time for Mpesa or COD
+      }, paymentMethod === 'mpesa' ? 15000 : 10000);  
     } catch (error) {
       console.error('Error during payment initiation:', error);
   
       await saveOrder({
         grandTotal, cartProducts, paymentMethod,
         paid: false, Mpesa: false, userId: session?.user?.id, email: session?.user?.email,
-        name:session?.user?.fullname,
+        fullname:session?.user?.fullname,phoneNumber:session?.user?.phoneNumber,
+        
       });
       Swal.fire({
         icon: 'error',
@@ -152,17 +157,18 @@ const CartPage = () => {
         },
       });
   
-      await saveOrder({
+       await saveOrder({
         grandTotal,
         cartProducts,
         paymentMethod: 'cod',
-        paid: false,  // Payment not yet made
-        Mpesa: false,  // M-Pesa is not used
+        paid: false,  
+        Mpesa: false,  
         userId: session?.user?.id,
         email: session?.user?.email,
-        name: session?.user?.fullname,
+        fullname: session?.user?.fullname,
+        phoneNumber: session?.user?.phoneNumber,
       });
-  
+      
       console.log('COD Order processed successfully.');
       Swal.fire({
         icon: 'success',
@@ -192,11 +198,18 @@ const CartPage = () => {
       setLoading(false);
     }
   };
-  
+
   const saveOrder = async (orderData) => {
     try {
-      const res = await axios.post('/api/checkout', orderData,paymentMethod);
-      if (res.data.success) {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      });
+      const result = await res.json();
+      if (result.success) {
         console.log('Order saved successfully');
       } else {
         console.log('Failed to save order');
@@ -207,117 +220,98 @@ const CartPage = () => {
   };
 
 
+
   return (
     <div>
       <Header />
-      <section className='mt-20 ml-5 overflow-y-scroll flex flex-col justify-center'>
-        <h2 className='text-xl font-semibold tracking-wider p-3'>Your Items to Checkout</h2>
+      <section className="mt-20  flex flex-col justify-center md:p-24 p-2">
+        <Text fontSize="2xl" fontWeight="bold" mb={4} textAlign="center">Your Items to Checkout</Text>
+        
         <div>
-          <div>
-            {cartProducts?.length === 0 && (
-              <p>No items in your cart</p>
-            )}
-            {cartProducts?.length > 0 && cartProducts.map((product, index) => (
-              <div key={product._id} className='flex items-center gap-4 mb-2 border-b py-2'>
-                <div className='w-24'>
-                  <Image width={240} height={240} src={product.image} className='rounded-lg' alt={product.name} />
-                </div>
-                <div>
-                  <h3 className='text-lg font-bold'>{product.name}</h3>
-
-                  {/* Check if there are selectedPrices */}
+          {cartProducts?.length === 0 && <Text>No items in your cart</Text>}
+          {cartProducts?.length > 0 && cartProducts.map((product, index) => (
+            <Box key={product._id} border="1px" borderColor="gray.200" borderRadius="lg" p={4} mb={4}>
+              <Flex align="center" gap={4}>
+                <Box w="80px">
+                  <Image width={240} height={240} src={product.image} className="rounded-lg" alt={product.name} />
+                </Box>
+                <Box flex="1">
+                  <Text fontSize="lg" fontWeight="bold">{product.name}</Text>
                   {product.selectedPrices ? (
-                    <div className='flex flex-row'>
+                    <Flex>
                       {product.selectedPrices.map((price, index) => (
-                        <span key={index} className='text-gray-600 flex flex-row'>
-                          <p className='font-bold mx-2'>{index + 1}</p> : Ksh {price}
-                        </span>
+                        <Text key={index} color="gray.600">
+                          <strong>{index + 1}</strong>: Ksh {price}
+                        </Text>
                       ))}
-                    </div>
+                    </Flex>
                   ) : (
-                    <h3 className='text-md'>Ksh {product.basePrice}</h3>
+                    <Text>Ksh {product.basePrice}</Text>
                   )}
-                  <div className='flex items-center justify-between'>
-                    <h1 className='text-xl font-semibold'>
-                      Total: Ksh {calculateTotal(product)}
-                    </h1>
-
-                    <button 
-                      onClick={() => removeCartProduct(index)} 
-                      className='text-black-500 flex items-center mt-2 border border-gray-300 p-2 ml-3 rounded-md'>
-                      <FaTrashAlt className='mr-1' />
+                  <Flex justify="space-between" align="center" mt={2}>
+                    <Text fontSize="xl" fontWeight="bold">Total: Ksh {calculateTotal(product)}</Text>
+                    <Button onClick={() => removeCartProduct(index)} colorScheme="red" variant="outline" leftIcon={<FaTrashAlt />}>
                       Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                    </Button>
+                  </Flex>
+                </Box>
+              </Flex>
+            </Box>
+          ))}
         </div>
 
-        {/* Make the total section sticky at the bottom */}
         {cartProducts?.length > 0 && (
-          <div className='mt-6 p-4 border-t border-gray-300 sticky bottom-0 bg-white'>
-            <h1 className='text-2xl font-bold'>
-               Total Amount to Pay: Ksh {grandTotal}
-            </h1>
-            <button onClick={() =>setPopup(true)} className='bg-primary text-white px-10 py-2 my-2 rounded-md text-lg font-semibold'>
-               Checkout
-            </button>
-          </div>
+          <Box position="sticky" bottom="0" p={4} bg="white" shadow="lg" borderTop="1px solid gray">
+           
+            {session ? (
+              <Button onClick={() => setPopup(true)} colorScheme="orange" size="lg" width="full" mt={4}>
+                Checkout (Ksh {grandTotal})
+              </Button>
+            ) : (
+              <Link href="/login">
+                <Button colorScheme="orange" size="lg" width="full" mt={4}>
+                  Please login to checkout
+                </Button>
+              </Link>
+            )}
+           
+          </Box>
         )}
       </section>
 
-      {/* Popup */}
-      {popup && (
-        <div className='fixed inset-0 bg-black/80 flex items-center justify-center z-50'>
-          <div className='bg-white p-6 rounded-xl shadow-lg w-full max-w-md mx-auto'>
-            <h2 className='text-xl font-semibold'>Checkout</h2>
-            <Box className="shadow-lg p-6 bg-white rounded-md">
-       
+      {/* Popup Modal */}
+      <Modal isOpen={popup} onClose={() => setPopup(false)} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Checkout</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box>
+              <Text fontSize="lg" mb={4}>Choose Payment Method</Text>
+              <RadioGroup onChange={setPaymentMethod} value={paymentMethod}>
+                <Stack spacing={4} direction='row'>
+                  <Radio value="mpesa" colorScheme="orange">M-Pesa</Radio>
+                  <Radio value="cod" colorScheme="orange">Pay Cash</Radio>
+                </Stack>
+              </RadioGroup>
 
-       <Text fontSize="2xl" fontWeight="bold" color="orange.500" mt={6} mb={2}>Payment Information</Text>
-       <Text fontSize="lg" color="orange.700" mb={2}>Choose a Payment Method</Text>
-       <RadioGroup onChange={setPaymentMethod} value={paymentMethod}>
-         <Stack spacing={4} direction='row'>
-           <Radio value="mpesa" colorScheme="orange">M-Pesa</Radio>
-           <Radio value="cod" colorScheme="orange">Pay Cash</Radio>
-         </Stack>
-       </RadioGroup>
+              {paymentMethod === 'mpesa' && (
+                <form onSubmit={handleMpesaPayment}>
+                  <Input placeholder="Mpesa Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} mt={4} />
+                  <Button type="submit" colorScheme="orange" width="full" mt={4} isLoading={loading}>Pay Ksh {grandTotal}</Button>
+                </form>
+              )}
 
-      
-       {paymentMethod === 'mpesa' && (
-        <div>
-         <Text fontSize="2xl" fontWeight="bold" mt={2} color="orange.700" mb={4}>Checkout Information</Text>
-          <form onSubmit={handleMpesaPayment} className="my-6 border p-4 rounded-md bg-gray-50">
-           <Text textAlign="center" fontSize="lg" fontWeight="bold" color="orange.500 " className="text-sm ">Pay with Mpesa</Text>
-           <Input variant="outline" placeholder="Mpesa Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} mb={4} />
-           <Button colorScheme="orange" type="submit" width="full" isDisabled={loading}>
-             {loading ? "Processing..." : `Pay ${grandTotal}`}
-           </Button>
-         </form>
-        </div>
-       )}
-
-       {paymentMethod === 'cod' && (
-         <Box mt={6}>
-           <Text fontSize="2xl" fontWeight="bold" color="orange.500" mb={4}>Cash</Text>
-                 <Text fontSize="lg" color="gray.700" mb={2}>Cash You Will Pay Ksh ({grandTotal})</Text>
-                 <Button colorScheme="orange" width="full" isDisabled={loading} onClick={handleCODPayment}>
-  {loading ? "Processing..." : "Finish Checkout"}
-</Button>
-
-         </Box>
-       )}
-     </Box>
-            <button 
-              onClick={() => setPopup(false)} 
-              className='mt-4 bg-red-500 text-white p-2 rounded-md'>
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+              {paymentMethod === 'cod' && (
+                <Box mt={4}>
+                  <Text fontSize="lg">Pay Ksh {grandTotal} on delivery.</Text>
+                  <Button colorScheme="orange" width="full" mt={4} onClick={handleCODPayment} isLoading={loading}>Place Order</Button>
+                </Box>
+              )}
+            </Box>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

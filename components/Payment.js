@@ -29,7 +29,7 @@ const Payment = () => {
     };
     calculateTotal();
   }, [cartBooks]);
-  console.log(cartBooks)
+  // console.log(cartBooks)
 
   const handleCheckout = async () => {
     // Prepare the checkout data
