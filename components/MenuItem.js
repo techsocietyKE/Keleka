@@ -3,7 +3,11 @@ import { CartContext } from './AppProvider';
 import Swal from 'sweetalert2';
 import Image from 'next/image';
 
-const MenuItem = ({ image, name, description, prices, stockStatus }) => {
+const MenuItem = (menuitems) => {
+
+  const {
+    image, name, description, prices, stockStatus 
+  } = menuitems
   const [showPopup, setShowPopUp] = useState(false);
   const { addToCart } = useContext(CartContext);
   const [selectedPrices, setSelectedPrices] = useState([]);
@@ -37,7 +41,7 @@ const MenuItem = ({ image, name, description, prices, stockStatus }) => {
 
   function handleAddToCartFromPopup() {
     if (selectedPrices.length > 0) {
-      addToCart({ ...menuItem, selectedPrices });
+      addToCart({ ...menuitems, selectedPrices });
       setShowPopUp(false);
       Swal.fire({
         text: `Added to cart Ksh ${totalPrice}`,
