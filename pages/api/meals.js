@@ -19,16 +19,16 @@ export default async function handle(req,res){
 
 
     if(method === 'POST'){
-        const {name,description,image,prices,category,createdBy} = req.body;
+        const {name,description,image,stockStatus,prices,category,createdBy} = req.body;
         const mealDoc =  await Meal.create({
-            name,description,prices,category,image,createdBy,
+            name,description,prices,stockStatus,category,image,createdBy,
         })
         res.json(mealDoc)
     }
 
     if (method === "PUT"){
-        const {name,description,prices,image,category,createdBy,_id} = req.body;
-        await Meal.updateOne({_id},{name,description,prices,image,category,createdBy,})
+        const {name,description,prices,image,stockStatus,category,createdBy,_id} = req.body;
+        await Meal.updateOne({_id},{name,description,stockStatus,prices,image,category,createdBy,})
         res.json(true)
     }
     if (method === 'DELETE'){

@@ -11,6 +11,7 @@ export default function MealForm({
   price: existingPrice = [],  // Initialize prices to an empty array if undefined
   image: existingImages,
   category: existingCategory = [], // Initialize category as an array for multiple selections
+  stockStatus: existingStockStatus = "inStock", // Default stock status
 }) {
   const { data: session } = useSession();
   const router = useRouter();
@@ -22,6 +23,7 @@ export default function MealForm({
   const [prices, setPrices] = useState(existingPrice || []); // Array to hold price values
   const [image, setImage] = useState(existingImages || "");
   const [category, setCategory] = useState(existingCategory || []); // Change to an array to hold selected categories
+  const [stockStatus, setStockStatus] = useState(existingStockStatus); // State for stock status
   const [isUploading, setIsUploading] = useState(false);
 
   // Save Meal Handler
@@ -30,9 +32,10 @@ export default function MealForm({
     const data = {
       name,
       description,
-      prices, // Save the array of prices
+      prices,
       image,
-      category, // Save selected categories as an array
+      category, 
+      stockStatus, 
       createdBy: session?.user?.firstname,
     };
 
@@ -84,6 +87,11 @@ export default function MealForm({
         ? prevCategory.filter(c => c !== selectedCategory) // Remove if already selected
         : [...prevCategory, selectedCategory] // Add if not selected
     );
+  }
+
+  // Handle stock status change
+  function handleStockChange(ev) {
+    setStockStatus(ev.target.value);
   }
 
   return (
@@ -196,6 +204,17 @@ export default function MealForm({
           <span className="ml-2">Supper</span>
         </label>
       </div>
+
+      {/* Stock Status Selection */}
+      <label className="block text-gray-700 mb-2">Stock Status</label>
+      <select
+        value={stockStatus}
+        onChange={handleStockChange}
+        className="w-full border border-gray-300 rounded-lg p-2 mb-4 outline-none"
+      >
+        <option value="inStock">In Stock</option>
+        <option value="outOfStock">Out of Stock</option>
+      </select>
 
       <button
         type="submit"

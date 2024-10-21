@@ -8,6 +8,11 @@ const MealSchema = new Schema({
   category: [{ type: String, required: false }],
   image: { type: String },
   timesOrdered: { type: Number, default: 0 }, 
+  stockStatus: {
+    type: String,
+    enum: ["inStock", "outOfStock"],  // Only allows these two values
+    default: "inStock",  // Default value when not provided
+  },
 }, {
   timestamps: true,
 });
