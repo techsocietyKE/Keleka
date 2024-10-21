@@ -35,8 +35,8 @@ const PopularMeals = () => {
 
   return (
     <Box p={6} maxW="900px" mx="auto" mt={8} boxShadow="lg" rounded="lg" bg="gray.50">
-      <Heading as="h2" size="lg" mb={6} textAlign="center" color="teal.600">
-        Popular Meals
+      <Heading as="h2" size="md" mb={6} textAlign="center" color="teal.600">
+        Popular Meals Today
       </Heading>
 
       <List spacing={4}>

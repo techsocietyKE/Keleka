@@ -7,6 +7,8 @@ export default function ViewMeal({
   prices: existingPrices,  
   image: existingImage,
   category:existingCategory,
+  
+
 }) {
  
   return (

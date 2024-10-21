@@ -11,6 +11,7 @@ export default function OrderForm({
   grandTotal: existingGrandTotal,
   paid: existingPaid,
   Confirmed: existingConfirmed,
+  paymentMethod:existingPaymentMethod
 
 }) {
   const { data: session } = useSession();
@@ -56,7 +57,8 @@ export default function OrderForm({
         />
       </div>
       <div className="flex items-center py-3">
-        <label className="block text-gray-700 mb-2">Paid</label>
+      <label className="block text-gray-700 mb-2">Payment</label>
+       
         <input
           type="checkbox"
           checked={paid}
@@ -88,7 +90,7 @@ export default function OrderForm({
     
         <button
           type="submit"
-          className="w-full  text-white rounded-lg py-2 mt-4  transition"
+          className="w-full bg-primary  text-white rounded-lg py-2 mt-4  transition"
         >
           Update Details
         </button>
