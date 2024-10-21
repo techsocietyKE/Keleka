@@ -13,6 +13,7 @@ const CartPage = () => {
   const { data: session } = useSession();
   const { cartProducts, removeCartProduct } = useContext(CartContext);
   const [popup, setPopup] = useState(false);
+  const [extraInfo, setExtraInfo] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('mpesa');
   const [loading, setLoading] = useState(false);
@@ -73,6 +74,7 @@ const CartPage = () => {
             grandTotal, cartProducts, paymentMethod, paid: false, Mpesa: false,
             userId: session?.user?.id, email: session?.user?.email,
             fullname:session?.user?.fullname,phoneNumber:session?.user?.phoneNumber,
+            extraInfo
           });
   
           Swal.fire({
@@ -107,6 +109,7 @@ const CartPage = () => {
           grandTotal, cartProducts, paymentMethod, paid: false, Mpesa: false,
           userId: session?.user?.id, email: session?.user?.email,
           fullname:session?.user?.fullname,phoneNumber:session?.user?.phoneNumber,
+          extraInfo
           
         });
         
@@ -122,7 +125,7 @@ const CartPage = () => {
       await saveOrder({
         grandTotal, cartProducts, paymentMethod,
         paid: false, Mpesa: false, userId: session?.user?.id, email: session?.user?.email,
-        fullname:session?.user?.fullname,phoneNumber:session?.user?.phoneNumber,
+        fullname:session?.user?.fullname,phoneNumber:session?.user?.phoneNumber,extraInfo
         
       });
       Swal.fire({
@@ -167,6 +170,7 @@ const CartPage = () => {
         email: session?.user?.email,
         fullname: session?.user?.fullname,
         phoneNumber: session?.user?.phoneNumber,
+        extraInfo
       });
       
       console.log('cash Order processed successfully.');
@@ -270,7 +274,7 @@ const CartPage = () => {
             ) : (
               <Link href="/login">
                 <Button colorScheme="orange" size="lg" width="full" mt={4}>
-                  Please sign in to checkout
+                  checkout
                 </Button>
               </Link>
             )}
@@ -298,13 +302,15 @@ const CartPage = () => {
               {paymentMethod === 'mpesa' && (
                 <form onSubmit={handleMpesaPayment}>
                   <Input placeholder="Mpesa Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} mt={4} />
+                 
                   <Button type="submit" colorScheme="orange" width="full" mt={4} isLoading={loading}>Pay Ksh {grandTotal}</Button>
                 </form>
               )}
 
               {paymentMethod === 'cash' && (
                 <Box mt={4}>
-                  <Text fontSize="lg">Pay Ksh {grandTotal} on delivery.</Text>
+                  
+                  <Text fontWeight={500} fontSize="lg">You will Pay Cash Ksh {grandTotal} .</Text>
                   <Button colorScheme="orange" width="full" mt={4} onClick={handleCashPayment} isLoading={loading}>Place Order</Button>
                 </Box>
               )}

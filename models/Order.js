@@ -7,6 +7,10 @@ const OrderSchema = new Schema({
   phoneNumber: String,
   grandTotal: String,
   userId: String,
+  extrainfo: {
+    type: String,
+    required: false,
+  },
   paid: {
     type: Boolean,
     default: false,

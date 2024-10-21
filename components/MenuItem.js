@@ -3,8 +3,7 @@ import { CartContext } from './AppProvider';
 import Swal from 'sweetalert2';
 import Image from 'next/image';
 
-const MenuItem = (menuItem) => {
-  const { image, name, description, prices } = menuItem;
+const MenuItem = ({ image, name, description, prices, stockStatus }) => {
   const [showPopup, setShowPopUp] = useState(false);
   const { addToCart } = useContext(CartContext);
   const [selectedPrices, setSelectedPrices] = useState([]);
@@ -21,7 +20,7 @@ const MenuItem = (menuItem) => {
 
   function handleAddToCartButtonClick() {
     if (prices.length === 0) {
-      addToCart(menuItem);
+      addToCart({ image, name, description, prices }); // Ensure you're adding the correct object
       Swal.fire({
         text: 'Added to cart',
         icon: 'success',
@@ -121,15 +120,21 @@ const MenuItem = (menuItem) => {
         <div className="p-4">
           <h3 className="text-lg font-bold mb-2">{name}</h3>
           <p className="text-sm text-gray-500 mb-4">{description}</p>
-          {prices?.length > 0 && (
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600">From Ksh {prices[0]}</span>
-              <button
-                className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark"
-                onClick={handleAddToCartButtonClick}
-              >
-                Add to Cart
-              </button>
+          {stockStatus === 'inStock' ? (
+            prices?.length > 0 && (
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-gray-600">From Ksh {prices[0]}</span>
+                <button
+                  className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark"
+                  onClick={handleAddToCartButtonClick}
+                >
+                  Add to Cart
+                </button>
+              </div>
+            )
+          ) : (
+            <div className=" outline outline-red-200 outline-1 text-red-600 text-center py-2 rounded-md">
+              Out of Stock
             </div>
           )}
         </div>
@@ -139,4 +144,3 @@ const MenuItem = (menuItem) => {
 };
 
 export default MenuItem;
-
