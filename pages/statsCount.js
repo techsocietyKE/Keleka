@@ -9,11 +9,9 @@ const StatsCount = () => {
   const [mealCount, setMealCount] = useState(0);
   const [orderCount, setOrderCount] = useState(0);
   const [userCount, setUserCount] = useState(0);
-  const [pendingDeliveryCount,setPendingDeliveryCount]= useState(0)
 
   const isAdmin = session?.user?.role === "Admin";
   const isStaff = session?.user?.role === "Staff";
-  const isDeliveryGuy = session?.user?.role === "DeliveryGuy";
 
   useEffect(() => {
     
@@ -62,37 +60,22 @@ const StatsCount = () => {
 
        {isStaff && (
         <>
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-gray-700">Total Books</h2>
-          <p className="text-3xl font-bold text-green-500 mt-4">{bookCount}</p>
+         <div className="bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-lg font-semibold text-gray-700">Total Meals</h2>
+          <p className="text-3xl font-bold text-green-500 mt-4">{mealCount}</p>
         </div>
         
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-lg font-semibold text-gray-700">Orders</h2>
           <p className="text-3xl font-bold text-blue-500 mt-4">{orderCount}</p>
         </div>
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-gray-700">Pending Deliveries</h2>
-          <p className="text-3xl font-bold text-blue-500 mt-4">{pendingDeliveryCount}</p>
-        </div>
+       
         </>
       )}
-
-{isDeliveryGuy && (
-        <>
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-gray-700">Pending Deliveries</h2>
-          <p className="text-3xl font-bold text-blue-500 mt-4">{pendingDeliveryCount}</p>
-        </div>
-        </>
-      )}
-        
-
-  
-        
+ 
       </div>
     </div>
   );
 };
 
-export default withAuth(StatsCount,['Admin','Staff','DeliveryGuy']);
+export default withAuth(StatsCount,['Admin','Staff']);

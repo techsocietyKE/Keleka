@@ -17,24 +17,23 @@ export default async function handle(req,res){
         }
     }
 
-
     if(method === 'POST'){
         const {
-            paid,Confirmed} = req.body;
+            status,paid,Confirmed} = req.body;
         const orderDoc =  await Order.create({
-            paid,Confirmed
+            status,paid,Confirmed
         })
         res.json(orderDoc)
     }
 
     if (method === "PUT"){
-        const {paid,Confirmed,_id
+        const {status,paid,Confirmed,_id
         } = req.body;
         
-        await Order.updateOne({_id},{paid,Confirmed})
+        await Order.updateOne({_id},{status,paid,Confirmed})
         res.json(true);
 
-a
+
     }
     if (method === 'DELETE'){
         if(req.query?.id){

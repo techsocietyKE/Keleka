@@ -13,4 +13,4 @@ const OrdersPage = () => {
   );
 };
 
-export default withAuth(OrdersPage, ["Admin", "Staff", "DeliveryGuy"]);
+export default withAuth(OrdersPage, ["Admin", "Staff"]);

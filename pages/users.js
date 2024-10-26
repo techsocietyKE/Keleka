@@ -107,4 +107,4 @@ const Users = () => {
     </Layout>
   );
 }
-export default withAuth(Users,['Admin','Staff','DeliveryGuy'])
+export default withAuth(Users,['Admin','Staff'])

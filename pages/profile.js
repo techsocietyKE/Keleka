@@ -56,4 +56,4 @@ const Profile = () => {
   );
 };
 
-export default withAuth(Profile,['Admin','Staff','DeliveryGuy']);
+export default withAuth(Profile,['Admin','Staff']);

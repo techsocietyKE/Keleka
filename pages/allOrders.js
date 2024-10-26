@@ -6,7 +6,6 @@ import Link from "next/link";
 const AllOrders = () => {
     const [orders, setOrders] = useState([]);
     const [activeTab, setActiveTab] = useState("Orders");
-    const [showOrderIds, setShowOrderIds] = useState({});
 
     useEffect(() => {
         if (activeTab === "Orders") {
@@ -16,55 +15,34 @@ const AllOrders = () => {
         }
     }, [activeTab]);
 
-    const toggleOrderIdVisibility = (orderId) => {
-        setShowOrderIds((prev) => ({
-            ...prev,
-            [orderId]: !prev[orderId],
-        }));
-    };
-
     return (
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
-            <table className="min-w-full table-auto">
+            <table className="min-w-full table-auto w-full border-collapse">
                 <thead className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                     <tr>
-                        <th className="py-3 px-6 text-left">Order No.</th>
+                        <th className="py-3 px-6 text-left">#</th>
                         <th className="py-3 px-6 text-left">Date</th>
                         <th className="py-3 px-6 text-left">Recipient</th>
                         <th className="py-3 px-6 text-left">Items</th>
                         <th className="py-3 px-6 text-left">Price</th>
                         <th className="py-3 px-6 text-left">Payment Status</th>
                         <th className="py-3 px-6 text-left">Payment Method</th>
-                        <th className="py-3 px-6 text-left">Confirm</th>
+                        <th className="py-3 px-6 text-left">Status</th>
                         <th className="py-3 px-6 text-left">Action</th>
                     </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
                     {orders.length > 0 ? (
-                        orders.map((order) => (
-                            <tr
-                                key={order._id}
-                                className="border-b border-gray-200 hover:bg-gray-100"
-                            >
-                                <td className="py-3 px-6 text-left whitespace-nowrap">
-                                    <button
-                                        onClick={() => toggleOrderIdVisibility(order._id)}
-                                        className="text-blue-600 hover:text-blue-800"
-                                    >
-                                        {showOrderIds[order._id]
-                                            ? order._id
-                                            : "Click to view"}
-                                    </button>
-                                </td>
+                        orders.map((order, index) => (
+                            <tr key={order._id} className="border-b border-gray-200 hover:bg-gray-100">
+                                <td className="py-3 px-6 text-left">{index}</td>
                                 <td className="py-3 px-6 text-left whitespace-nowrap">
                                     {moment(order.createdAt).format("MMM DD, YYYY")}
                                 </td>
                                 <td className="py-3 px-6 text-left">
                                     <div className="text-sm">
                                         <p className="font-semibold">{order.fullname}</p>
-                                        {/* <p>{order.email}</p> */}
                                         <p>{order.phoneNumber}</p>
-                                       
                                     </div>
                                 </td>
                                 <td className="py-3 px-6 text-left">
@@ -80,34 +58,31 @@ const AllOrders = () => {
                                 </td>
                                 <td className="py-3 px-6 text-left">{order.grandTotal} /= </td>
                                 <td className="py-3 px-6 text-left">
-                                    <span
-                                        className={`inline-block px-3 py-1 font-semibold text-sm rounded-full ${order.paid
-                                            ? "bg-green-100 text-green-600"
-                                            : "bg-red-100 text-red-600"
-                                            }`}
-                                    >
+                                    <span className={`inline-block px-3 py-1 font-semibold text-sm rounded-full ${order.paid ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"}`}>
                                         {order.paid ? "Paid" : "Not Paid"}
                                     </span>
                                     {order.paymentMethod === "mpesa" && (
-                                        <span className="ml-2 text-green-500">(Paid with Mpesa)</span>
+                                        <span className="ml-2 text-green-500">(Mpesa)</span>
                                     )}
                                 </td>
                                 <td className="py-3 px-6 text-left">
                                     {order.paymentMethod === "cash" ? "Cash" : "Mpesa"}
                                 </td>
-                               
                                 <td className="py-3 px-6 text-left">
                                     <span
-                                        className={`inline-block px-3 py-1 font-semibold text-sm rounded-full ${order.Confirmed
-                                            ? "bg-green-100 text-green-600"
-                                            : "bg-red-100 text-red-600"
-                                            }`}
+                                        className={`inline-block px-3 py-1 font-semibold text-sm rounded-full ${
+                                            order.status === "Pending"
+                                                ? "bg-red-500 text-white"
+                                                : order.status === "Ready"
+                                                ? "bg-green-500 text-white"
+                                                : "bg-orange-500 text-white"
+                                        }`}
                                     >
-                                        {order.Confirmed ? "Confirmed" : "Pending"}
+                                        {order.status}
                                     </span>
                                 </td>
-                                <td className="pt-10 px-6 flex items-center gap-3 text-left">
-                                    <Link href={'/orders/edit/' + order._id} className="text-blue-600 hover:text-blue-800">
+                                <td className="py-3 px-6 flex items-center gap-3 text-left">
+                                    <Link href={`/orders/edit/${order._id}`} className="text-blue-600 hover:text-blue-800">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
@@ -123,7 +98,7 @@ const AllOrders = () => {
                                             />
                                         </svg>
                                     </Link>
-                                    <Link href={"/orders/delete/" + order._id}>
+                                    <Link href={`/orders/delete/${order._id}`}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
