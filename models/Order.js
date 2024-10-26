@@ -19,9 +19,9 @@ const OrderSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  Confirmed: {
-    type: Boolean,
-    default: false,
+  status: {
+    type: String,
+    default: 'Pending',
   },
   paymentMethod: String,
 }, {

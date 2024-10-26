@@ -120,7 +120,7 @@ const MyOrders = () => {
               {order.paymentMethod === 'cash' && (
                 <div className="mt-2 w-auto">
                   <p className={`inline-block p-2 rounded-md w-36 text-center ${order.Confirmed ? 'bg-green-500' : 'bg-red-500'} text-white`}>
-                    Order Confirmed: {order.Confirmed ? 'Yes' : 'No'}
+                    Status: {order.status}
                   </p>
                 </div>
               )}
