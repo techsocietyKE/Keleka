@@ -117,13 +117,24 @@ const MyOrders = () => {
                 </p>
               </div>
 
-              {order.paymentMethod === 'cash' && (
-                <div className="mt-2 w-auto">
-                  <p className={`inline-block p-2 rounded-md w-36 text-center ${order.Confirmed ? 'bg-green-500' : 'bg-red-500'} text-white`}>
-                    Status: {order.status}
-                  </p>
-                </div>
-              )}
+              
+              <div className="mt-2 w-auto">
+  <p
+    className={`inline-block p-2 rounded-md w-36 text-center text-white ${
+      order.status === 'Pending'
+        ? 'bg-red-500'
+        : order.status === 'Ready'
+        ? 'bg-green-500'
+        : order.status === 'Completed'
+        ? 'bg-orange-500'
+        : ''
+    }`}
+  >
+    Status: {order.status}
+  </p>
+</div>
+
+            
             </div>
           ))
         ) : (
