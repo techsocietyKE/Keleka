@@ -6,6 +6,11 @@ const PopularMeals = () => {
   const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Get the current date and day
+  const today = new Date();
+  const currentDate = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const currentDay = today.toLocaleDateString('en-GB', { weekday: 'long' });
+
   useEffect(() => {
     const fetchPopularMeals = async () => {
       try {
@@ -36,7 +41,7 @@ const PopularMeals = () => {
   return (
     <Box p={6} maxW="900px" mx="auto" mt={8} boxShadow="lg" rounded="lg" bg="gray.50">
       <Heading as="h2" size="md" mb={6} textAlign="center" color="teal.600">
-        Popular Meals Today
+        Popular Meals Today ({currentDate}, {currentDay})
       </Heading>
 
       <List spacing={4}>
@@ -44,7 +49,6 @@ const PopularMeals = () => {
           <ListItem key={index} p={4} bg="white" rounded="md" boxShadow="md" _hover={{ bg: 'gray.100' }}>
             <Flex justify="space-between" align="center">
               <Stack direction="row" align="center">
-                {/* Display FaStar based on timesOrdered */}
                 {meal.timesOrdered >= 5 ? (
                   <Icon as={FaStar} color="yellow.400" w={6} h={6} />
                 ) : meal.timesOrdered >= 2 ? (
@@ -56,7 +60,6 @@ const PopularMeals = () => {
                   <Text fontSize="lg" fontWeight="bold" color="gray.700">
                     {meal.name}
                   </Text>
-                  {/* Display the prices */}
                   {meal.prices && meal.prices.length > 0 && (
                     <Text fontSize="md" color="gray.500">
                       Meal Price Orders: {meal.prices.map((price, idx) => (
